@@ -16,7 +16,8 @@ interface TaskState {
 export type TaskActionInput =
   | TaskAddActionInput
   | TaskDoneActionInput
-  | TaskUpdateActionInput;
+  | TaskUpdateActionInput
+  | TaskRemoveActionInput;
 
 export type TaskAddActionInput = ActionInput<{
   exec: {
@@ -150,6 +151,57 @@ const update: ActionSet<TaskState, TaskUpdateActionInput> = {
   },
 };
 
+export type TaskRemoveActionInput = ActionInput<{
+  exec: {
+    taskId: string;
+  };
+  undo: {
+    index: number;
+    task: Task;
+  };
+  redo: {
+    taskId: string;
+  };
+}>;
+
+const remove: ActionSet<TaskState, TaskRemoveActionInput> = {
+  exec(state, input) {
+    const task = findTask(state.tasks, input.taskId);
+    const index = findTaskIndex(state.tasks, input.taskId);
+
+    return {
+      state: {
+        ...state,
+        tasks: removeTaskFrom(state.tasks, input.taskId),
+      },
+      output: { index, task },
+    };
+  },
+  undo(state, input) {
+    return {
+      state: {
+        ...state,
+        tasks: addTaskAt(state.tasks, input.task, input.index),
+      },
+      output: {
+        taskId: input.task.id,
+      },
+    };
+  },
+  redo(state, input) {
+    const task = findTask(state.tasks, input.taskId);
+    const index = findTaskIndex(state.tasks, input.taskId);
+
+    return {
+      state: {
+        ...state,
+        tasks: removeTaskFrom(state.tasks, input.taskId),
+      },
+      output: { index, task },
+    };
+  },
+};
+
 export const taskActions = {
   add: toTaskAction({
     exec(state, input) {
@@ -190,6 +242,7 @@ export const taskActions = {
   }),
   done,
   update,
+  remove,
 };
 
 function toTaskAction(action: TaskAction): TaskAction {

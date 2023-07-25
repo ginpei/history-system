@@ -113,7 +113,18 @@ export function HomePage(): JSX.Element {
   };
 
   const onRemoveClick = (task: Task) => {
-    console.log("# remove", task);
+    const ok = window.confirm(`Remove this task: "${task.title}"`);
+    if (!ok) {
+      return;
+    }
+
+    const { state, output } = taskActions.remove.exec(
+      { tasks },
+      { taskId: task.id },
+    );
+
+    setTasks(state.tasks);
+    setHistory([buildTaskHistory("remove", output), ...history]);
   };
 
   return (
