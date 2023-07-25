@@ -7,12 +7,7 @@ import { H1 } from "../../lib/style/H1";
 import { H2 } from "../../lib/style/H2";
 import { Task } from "../../lib/task/Task";
 import { TaskActionInput, taskActions } from "../../lib/task/TaskAction";
-
-interface History<T extends TaskActionInput, S extends "undo" | "redo"> {
-  action: string;
-  id: string;
-  input: T[S];
-}
+import { History, useTaskHistory } from "./history";
 
 export function HomePage(): JSX.Element {
   const [tasks, setTasks] = useState<Task[]>([
@@ -28,12 +23,7 @@ export function HomePage(): JSX.Element {
     },
   ]);
 
-  const [history, setHistory] = useState<History<TaskActionInput, "undo">[]>(
-    [],
-  );
-  const [redoHistory, setRedoHistory] = useState<
-    History<TaskActionInput, "redo">[]
-  >([]);
+  const [history, redoHistory, setHistory, setRedoHistory] = useTaskHistory();
 
   const onAddTaskClick = () => {
     const title = window.prompt("Task title");
