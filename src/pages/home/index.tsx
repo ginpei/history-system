@@ -1,20 +1,34 @@
-import Head from "next/head";
+import type { NextPage } from "next";
 import { useState } from "react";
-import { HStack } from "../../lib/layout/HStack";
-import { VStack } from "../../lib/layout/VStack";
-import { Button } from "../../lib/style/Button";
-import { H1 } from "../../lib/style/H1";
-import { H2 } from "../../lib/style/H2";
+import { HStack } from "../../src/lib/layout/HStack";
+import { VStack } from "../../src/lib/layout/VStack";
+import { Button } from "../../src/lib/style/Button";
+import { H1 } from "../../src/lib/style/H1";
+import { H2 } from "../../src/lib/style/H2";
 import { Task } from "./Task";
-import { TaskActionInput, taskActions } from "./TaskAction";
+import {
+  TaskActionInput,
+  TaskAddActionInput,
+  TaskDoneActionInput,
+  taskActions,
+} from "./TaskAction";
 
-interface History<T extends TaskActionInput, S extends "undo" | "redo"> {
+interface History<
+  T extends TaskAddActionInput | TaskDoneActionInput,
+  S extends "undo" | "redo",
+> {
   action: string;
   id: string;
   input: T[S];
 }
 
-export function HomePage(): JSX.Element {
+const Home: NextPage = () => {
+  return <HistoryPage />;
+};
+
+export default Home;
+
+function HistoryPage(): JSX.Element {
   const [tasks, setTasks] = useState<Task[]>([
     {
       done: false,
@@ -61,10 +75,8 @@ export function HomePage(): JSX.Element {
       return;
     }
 
-    // TODO solve types
-    const action = lastHistory.action as keyof typeof taskActions;
-    const actionSet = taskActions[action] as any;
-
+    const action = lastHistory.action;
+    const actionSet = taskActions[action];
     const { state, output } = actionSet.undo({ tasks }, lastHistory.input);
 
     setTasks(state.tasks);
@@ -85,10 +97,8 @@ export function HomePage(): JSX.Element {
       return;
     }
 
-    // TODO solve types
-    const action = prevHistory.action as keyof typeof taskActions;
-    const actionSet = taskActions[action] as any;
-
+    const action = prevHistory.action;
+    const actionSet = taskActions[action];
     const { state, output } = actionSet.redo({ tasks }, prevHistory.input);
 
     setTasks(state.tasks);
@@ -123,10 +133,6 @@ export function HomePage(): JSX.Element {
 
   return (
     <div className="m-4">
-      <Head>
-        <title>History system</title>
-        <link rel="icon" href="/icon-512.png" />
-      </Head>
       <VStack>
         <H1>History system</H1>
         <div className="flex gap-8 [&>*]:w-1/2">
