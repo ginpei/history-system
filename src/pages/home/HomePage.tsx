@@ -35,10 +35,7 @@ export function HomePage(): JSX.Element {
     const { state, output } = taskActions.add.exec({ tasks }, { title });
 
     setTasks(state.tasks);
-    setHistory([
-      buildTaskHistory("add", { taskId: output.taskId }),
-      ...history,
-    ]);
+    setHistory([buildTaskHistory("add", output), ...history]);
     setRedoHistory([]);
   };
 
@@ -83,10 +80,7 @@ export function HomePage(): JSX.Element {
     );
 
     setTasks(state.tasks);
-    setHistory([
-      buildTaskHistory("done", { taskId: output.taskId, done: output.done }),
-      ...history,
-    ]);
+    setHistory([buildTaskHistory("done", output), ...history]);
     setRedoHistory([]);
   };
 
@@ -102,13 +96,7 @@ export function HomePage(): JSX.Element {
     );
 
     setTasks(state.tasks);
-    setHistory([
-      buildTaskHistory("update", {
-        taskId: output.taskId,
-        title: output.title,
-      }),
-      ...history,
-    ]);
+    setHistory([buildTaskHistory("update", output), ...history]);
     setRedoHistory([]);
   };
 
