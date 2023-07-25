@@ -7,6 +7,17 @@ export interface History<T extends TaskActionInput, S extends "undo" | "redo"> {
   input: T[S];
 }
 
+export function buildTaskHistory<
+  T extends TaskActionInput,
+  S extends "undo" | "redo",
+>(action: string, input: T[S]): History<T, S> {
+  return {
+    action,
+    id: crypto.randomUUID(),
+    input,
+  };
+}
+
 /**
  * @example
  * const [history, redoHistory, setHistory, setRedoHistory] = useTaskHistory();

@@ -7,7 +7,7 @@ import { H1 } from "../../lib/style/H1";
 import { H2 } from "../../lib/style/H2";
 import { Task } from "../../lib/task/Task";
 import { taskActions } from "../../lib/task/TaskAction";
-import { useTaskHistory } from "./history";
+import { buildTaskHistory, useTaskHistory } from "./history";
 
 const initialTasks: Task[] = [
   {
@@ -36,11 +36,7 @@ export function HomePage(): JSX.Element {
 
     setTasks(state.tasks);
     setHistory([
-      {
-        action: "add",
-        id: crypto.randomUUID(),
-        input: { taskId: output.taskId },
-      },
+      buildTaskHistory("add", { taskId: output.taskId }),
       ...history,
     ]);
     setRedoHistory([]);
@@ -60,14 +56,7 @@ export function HomePage(): JSX.Element {
 
     setTasks(state.tasks);
     setHistory(restHistory);
-    setRedoHistory([
-      {
-        action,
-        id: crypto.randomUUID(),
-        input: output,
-      },
-      ...redoHistory,
-    ]);
+    setRedoHistory([buildTaskHistory(action, output), ...redoHistory]);
   };
 
   const onRedoClick = () => {
@@ -83,14 +72,7 @@ export function HomePage(): JSX.Element {
     const { state, output } = actionSet.redo({ tasks }, prevHistory.input);
 
     setTasks(state.tasks);
-    setHistory([
-      {
-        action,
-        id: crypto.randomUUID(),
-        input: output,
-      },
-      ...history,
-    ]);
+    setHistory([buildTaskHistory(action, output), ...history]);
     setRedoHistory(restRedoHistory);
   };
 
@@ -102,11 +84,7 @@ export function HomePage(): JSX.Element {
 
     setTasks(state.tasks);
     setHistory([
-      {
-        action: "done",
-        id: crypto.randomUUID(),
-        input: { taskId: output.taskId, done: output.done },
-      },
+      buildTaskHistory("done", { taskId: output.taskId, done: output.done }),
       ...history,
     ]);
     setRedoHistory([]);
@@ -125,11 +103,10 @@ export function HomePage(): JSX.Element {
 
     setTasks(state.tasks);
     setHistory([
-      {
-        action: "update",
-        id: crypto.randomUUID(),
-        input: { taskId: output.taskId, title: output.title },
-      },
+      buildTaskHistory("update", {
+        taskId: output.taskId,
+        title: output.title,
+      }),
       ...history,
     ]);
     setRedoHistory([]);
