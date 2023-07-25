@@ -165,14 +165,14 @@ export function HomePage(): JSX.Element {
             <ul className="[&>*]:border-t">
               {[...history].reverse().map((history, index, { length }) => (
                 <li
-                  className={`${index + 1 === length && "font-bold"}`}
+                  className={`${index + 1 === length && "bg-slate-100"}`}
                   key={history.id}
                 >
                   {history.action} {JSON.stringify(history.input)}
                 </li>
               ))}
               {redoHistory.map((history) => (
-                <li className="text-gray-500" key={history.id}>
+                <li className="text-gray-400" key={history.id}>
                   {history.action} {JSON.stringify(history.input)}
                 </li>
               ))}
