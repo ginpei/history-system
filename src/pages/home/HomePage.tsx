@@ -6,8 +6,8 @@ import { Button } from "../../lib/style/Button";
 import { H1 } from "../../lib/style/H1";
 import { H2 } from "../../lib/style/H2";
 import { Task } from "../../lib/task/Task";
-import { TaskActionInput, taskActions } from "../../lib/task/TaskAction";
-import { History, useTaskHistory } from "./history";
+import { taskActions } from "../../lib/task/TaskAction";
+import { useTaskHistory } from "./history";
 
 export function HomePage(): JSX.Element {
   const [tasks, setTasks] = useState<Task[]>([
