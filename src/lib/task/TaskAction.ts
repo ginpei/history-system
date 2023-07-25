@@ -1,4 +1,4 @@
-import { ActionInput, ActionSet } from "./Action";
+import { ActionInput, ActionSet } from "../../pages/home/Action";
 import { Task, buildTask } from "./Task";
 
 interface TaskState {

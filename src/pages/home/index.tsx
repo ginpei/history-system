@@ -11,7 +11,7 @@ import {
   TaskAddActionInput,
   TaskDoneActionInput,
   taskActions,
-} from "./TaskAction";
+} from "../../lib/task/TaskAction";
 
 interface History<
   T extends TaskAddActionInput | TaskDoneActionInput,

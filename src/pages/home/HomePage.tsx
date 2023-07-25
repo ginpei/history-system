@@ -5,8 +5,8 @@ import { VStack } from "../../lib/layout/VStack";
 import { Button } from "../../lib/style/Button";
 import { H1 } from "../../lib/style/H1";
 import { H2 } from "../../lib/style/H2";
-import { Task } from "./Task";
-import { TaskActionInput, taskActions } from "./TaskAction";
+import { Task } from "../../lib/task/Task";
+import { TaskActionInput, taskActions } from "../../lib/task/TaskAction";
 
 interface History<T extends TaskActionInput, S extends "undo" | "redo"> {
   action: string;
