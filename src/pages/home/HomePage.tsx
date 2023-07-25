@@ -9,20 +9,21 @@ import { Task } from "../../lib/task/Task";
 import { taskActions } from "../../lib/task/TaskAction";
 import { useTaskHistory } from "./history";
 
-export function HomePage(): JSX.Element {
-  const [tasks, setTasks] = useState<Task[]>([
-    {
-      done: false,
-      id: "1",
-      title: "Task 1",
-    },
-    {
-      done: false,
-      id: "2",
-      title: "Task 2",
-    },
-  ]);
+const initialTasks: Task[] = [
+  {
+    done: false,
+    id: "1",
+    title: "Task 1",
+  },
+  {
+    done: false,
+    id: "2",
+    title: "Task 2",
+  },
+];
 
+export function HomePage(): JSX.Element {
+  const [tasks, setTasks] = useState(initialTasks);
   const [history, redoHistory, setHistory, setRedoHistory] = useTaskHistory();
 
   const onAddTaskClick = () => {
