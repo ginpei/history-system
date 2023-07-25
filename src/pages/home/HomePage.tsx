@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { H1 } from "../../lib/style/H1";
 
 export function HomePage(): JSX.Element {
   return (
@@ -7,7 +8,7 @@ export function HomePage(): JSX.Element {
         <title>History system</title>
         <link rel="icon" href="/icon-512.png" />
       </Head>
-      <h1>HomePage</h1>
+      <H1>HomePage</H1>
     </div>
   );
 }
