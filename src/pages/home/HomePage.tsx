@@ -122,7 +122,26 @@ export function HomePage(): JSX.Element {
   };
 
   const onEditClick = (task: Task) => {
-    console.log("# edit", task);
+    const newTitle = window.prompt("Task title", task.title);
+    if (newTitle === null || newTitle === task.title) {
+      return;
+    }
+
+    const { state, output } = taskActions.update.exec(
+      { tasks },
+      { taskId: task.id, title: newTitle },
+    );
+
+    setTasks(state.tasks);
+    setHistory([
+      {
+        action: "update",
+        id: crypto.randomUUID(),
+        input: { taskId: output.taskId, title: output.title },
+      },
+      ...history,
+    ]);
+    setRedoHistory([]);
   };
 
   const onRemoveClick = (task: Task) => {

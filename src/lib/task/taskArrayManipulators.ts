@@ -14,6 +14,10 @@ export function addTaskAt(tasks: Task[], newTask: Task, index = -1): Task[] {
   return newTasks;
 }
 
+export function updateTask(tasks: Task[], task: Task): Task[] {
+  return tasks.map((v) => (v.id === task.id ? task : v));
+}
+
 export function removeTaskFrom(tasks: Task[], taskId: string): Task[] {
   return tasks.filter((v) => v.id !== taskId);
 }
