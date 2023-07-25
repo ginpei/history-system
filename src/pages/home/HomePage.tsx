@@ -121,6 +121,14 @@ export function HomePage(): JSX.Element {
     setRedoHistory([]);
   };
 
+  const onEditClick = (task: Task) => {
+    console.log("# edit", task);
+  };
+
+  const onRemoveClick = (task: Task) => {
+    console.log("# remove", task);
+  };
+
   return (
     <div className="m-4">
       <Head>
@@ -138,16 +146,39 @@ export function HomePage(): JSX.Element {
             </HStack>
             <ul>
               {tasks.map((task) => (
-                <li key={task.id}>
-                  <label className="flex gap-1 items-baseline hover:underline">
+                <li
+                  className="
+                    flex gap-4
+                    hover:bg-slate-50
+                    [&>.controls]:invisible
+                    [&:hover>.controls]:visible
+                  "
+                  key={task.id}
+                >
+                  <label className="flex flex-1 gap-1 items-baseline hover:underline">
                     <input
                       checked={task.done}
                       onChange={() => onTaskDoneChange(task.id, !task.done)}
                       type="checkbox"
                     />
-                    {task.title}
-                    <small>({task.id})</small>
+                    <span>
+                      {task.title} <small>({task.id})</small>
+                    </span>
                   </label>
+                  <span className="controls">
+                    <button
+                      className="p-1 hover:bg-slate-200"
+                      onClick={() => onEditClick(task)}
+                    >
+                      ✏
+                    </button>
+                    <button
+                      className="p-1 hover:bg-slate-200"
+                      onClick={() => onRemoveClick(task)}
+                    >
+                      🗑️
+                    </button>
+                  </span>
                 </li>
               ))}
             </ul>
