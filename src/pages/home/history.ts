@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import { TaskActionInput } from "../../lib/task/TaskAction";
+import { TaskActionInput } from "../../lib/task/taskActions";
 
 export interface History<T extends TaskActionInput, S extends "undo" | "redo"> {
   action: string;

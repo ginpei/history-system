@@ -1,14 +1,14 @@
 import Head from "next/head";
 import { useState } from "react";
+import { Container } from "../../lib/layout/Container";
 import { HStack } from "../../lib/layout/HStack";
 import { VStack } from "../../lib/layout/VStack";
 import { Button } from "../../lib/style/Button";
 import { H1 } from "../../lib/style/H1";
 import { H2 } from "../../lib/style/H2";
 import { Task } from "../../lib/task/Task";
-import { taskActions } from "../../lib/task/TaskAction";
+import { taskActions } from "../../lib/task/taskActions";
 import { buildTaskHistory, useTaskHistory } from "./history";
-import { Container } from "../../lib/layout/Container";
 
 const initialTasks: Task[] = [
   {

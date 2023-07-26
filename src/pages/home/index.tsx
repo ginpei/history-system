@@ -1,22 +1,14 @@
 import type { NextPage } from "next";
 import { useState } from "react";
+import { TaskActionInput, taskActions } from "../../lib/task/taskActions";
 import { HStack } from "../../src/lib/layout/HStack";
 import { VStack } from "../../src/lib/layout/VStack";
 import { Button } from "../../src/lib/style/Button";
 import { H1 } from "../../src/lib/style/H1";
 import { H2 } from "../../src/lib/style/H2";
 import { Task } from "./Task";
-import {
-  TaskActionInput,
-  TaskAddActionInput,
-  TaskDoneActionInput,
-  taskActions,
-} from "../../lib/task/TaskAction";
 
-interface History<
-  T extends TaskAddActionInput | TaskDoneActionInput,
-  S extends "undo" | "redo",
-> {
+interface History<T extends TaskActionInput, S extends "undo" | "redo"> {
   action: string;
   id: string;
   input: T[S];
