@@ -9,15 +9,17 @@ import {
   updateTask,
 } from "./taskArrayManipulators";
 
-interface TaskState {
-  tasks: Task[];
-}
-
 export type TaskActionInput =
   | TaskAddActionInput
   | TaskDoneActionInput
   | TaskUpdateActionInput
   | TaskRemoveActionInput;
+
+interface TaskState {
+  tasks: Task[];
+}
+
+type TaskAction = ActionSet<TaskState, TaskAddActionInput>;
 
 export type TaskAddActionInput = ActionInput<{
   exec: {
@@ -32,7 +34,43 @@ export type TaskAddActionInput = ActionInput<{
   };
 }>;
 
-type TaskAction = ActionSet<TaskState, TaskAddActionInput>;
+const add = toTaskAction({
+  exec(state, input) {
+    const task = buildTask({ title: input.title });
+
+    return {
+      state: {
+        tasks: addTaskAt(state.tasks, task),
+      },
+      output: {
+        taskId: task.id,
+      },
+    };
+  },
+  undo(state, input) {
+    const task = findTask(state.tasks, input.taskId);
+    const index = findTaskIndex(state.tasks, input.taskId);
+
+    return {
+      state: {
+        ...state,
+        tasks: removeTaskFrom(state.tasks, input.taskId),
+      },
+      output: { index, task },
+    };
+  },
+  redo(state, input) {
+    return {
+      state: {
+        ...state,
+        tasks: addTaskAt(state.tasks, input.task, input.index),
+      },
+      output: {
+        taskId: input.task.id,
+      },
+    };
+  },
+});
 
 export type TaskDoneActionInput = ActionInput<{
   exec: {
@@ -203,43 +241,7 @@ const remove: ActionSet<TaskState, TaskRemoveActionInput> = {
 };
 
 export const taskActions = {
-  add: toTaskAction({
-    exec(state, input) {
-      const task = buildTask({ title: input.title });
-
-      return {
-        state: {
-          tasks: addTaskAt(state.tasks, task),
-        },
-        output: {
-          taskId: task.id,
-        },
-      };
-    },
-    undo(state, input) {
-      const task = findTask(state.tasks, input.taskId);
-      const index = findTaskIndex(state.tasks, input.taskId);
-
-      return {
-        state: {
-          ...state,
-          tasks: removeTaskFrom(state.tasks, input.taskId),
-        },
-        output: { index, task },
-      };
-    },
-    redo(state, input) {
-      return {
-        state: {
-          ...state,
-          tasks: addTaskAt(state.tasks, input.task, input.index),
-        },
-        output: {
-          taskId: input.task.id,
-        },
-      };
-    },
-  }),
+  add,
   done,
   update,
   remove,
