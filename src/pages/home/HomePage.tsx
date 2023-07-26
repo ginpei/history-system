@@ -7,24 +7,27 @@ import { Button } from "../../lib/style/Button";
 import { H1 } from "../../lib/style/H1";
 import { H2 } from "../../lib/style/H2";
 import { Task } from "../../lib/task/Task";
+import { TaskState } from "../../lib/task/TaskState";
 import { taskActions } from "../../lib/task/taskActions";
 import { buildTaskHistory, useTaskHistory } from "./history";
 
-const initialTasks: Task[] = [
-  {
-    done: false,
-    id: "1",
-    title: "Task 1",
-  },
-  {
-    done: false,
-    id: "2",
-    title: "Task 2",
-  },
-];
+const initialTasks: TaskState = {
+  tasks: [
+    {
+      done: false,
+      id: "1",
+      title: "Task 1",
+    },
+    {
+      done: false,
+      id: "2",
+      title: "Task 2",
+    },
+  ],
+};
 
 export function HomePage(): JSX.Element {
-  const [tasks, setTasks] = useState(initialTasks);
+  const [taskState, setTaskState] = useState(initialTasks);
   const [history, redoHistory, setHistory, setRedoHistory] = useTaskHistory();
 
   const onAddTaskClick = () => {
@@ -33,9 +36,9 @@ export function HomePage(): JSX.Element {
       return;
     }
 
-    const { state, output } = taskActions.add.exec({ tasks }, { title });
+    const { state, output } = taskActions.add.exec(taskState, { title });
 
-    setTasks(state.tasks);
+    setTaskState(state);
     setHistory([buildTaskHistory("add", output), ...history]);
     setRedoHistory([]);
   };
@@ -48,11 +51,14 @@ export function HomePage(): JSX.Element {
 
     // TODO solve types
     const action = lastHistory.action as keyof typeof taskActions;
-    const actionSet = taskActions[action] as any;
+    const actionSet = taskActions[action];
 
-    const { state, output } = actionSet.undo({ tasks }, lastHistory.input);
+    const { state, output } = actionSet.undo(
+      taskState,
+      lastHistory.input as any,
+    );
 
-    setTasks(state.tasks);
+    setTaskState(state);
     setHistory(restHistory);
     setRedoHistory([buildTaskHistory(action, output), ...redoHistory]);
   };
@@ -65,22 +71,25 @@ export function HomePage(): JSX.Element {
 
     // TODO solve types
     const action = prevHistory.action as keyof typeof taskActions;
-    const actionSet = taskActions[action] as any;
+    const actionSet = taskActions[action];
 
-    const { state, output } = actionSet.redo({ tasks }, prevHistory.input);
+    const { state, output } = actionSet.redo(
+      taskState,
+      prevHistory.input as any,
+    );
 
-    setTasks(state.tasks);
+    setTaskState(state);
     setHistory([buildTaskHistory(action, output), ...history]);
     setRedoHistory(restRedoHistory);
   };
 
   const onTaskDoneChange = (taskId: string, done: boolean) => {
-    const { state, output } = taskActions.done.exec(
-      { tasks },
-      { taskId, done },
-    );
+    const { state, output } = taskActions.done.exec(taskState, {
+      taskId,
+      done,
+    });
 
-    setTasks(state.tasks);
+    setTaskState(state);
     setHistory([buildTaskHistory("done", output), ...history]);
     setRedoHistory([]);
   };
@@ -91,12 +100,12 @@ export function HomePage(): JSX.Element {
       return;
     }
 
-    const { state, output } = taskActions.update.exec(
-      { tasks },
-      { taskId: task.id, title: newTitle },
-    );
+    const { state, output } = taskActions.update.exec(taskState, {
+      taskId: task.id,
+      title: newTitle,
+    });
 
-    setTasks(state.tasks);
+    setTaskState(state);
     setHistory([buildTaskHistory("update", output), ...history]);
     setRedoHistory([]);
   };
@@ -107,12 +116,11 @@ export function HomePage(): JSX.Element {
       return;
     }
 
-    const { state, output } = taskActions.remove.exec(
-      { tasks },
-      { taskId: task.id },
-    );
+    const { state, output } = taskActions.remove.exec(taskState, {
+      taskId: task.id,
+    });
 
-    setTasks(state.tasks);
+    setTaskState(state);
     setHistory([buildTaskHistory("remove", output), ...history]);
     setRedoHistory([]);
   };
@@ -131,10 +139,10 @@ export function HomePage(): JSX.Element {
               <H2>Tasks</H2>
               <HStack>
                 <Button onClick={onAddTaskClick}>Add task...</Button>
-                <Button onClick={() => console.log(tasks)}>Log</Button>
+                <Button onClick={() => console.log(taskState)}>Log</Button>
               </HStack>
               <ul>
-                {tasks.map((task) => (
+                {taskState.tasks.map((task) => (
                   <li
                     className="
                       flex gap-4
