@@ -114,6 +114,7 @@ export function HomePage(): JSX.Element {
 
     setTasks(state.tasks);
     setHistory([buildTaskHistory("remove", output), ...history]);
+    setRedoHistory([]);
   };
 
   return (
