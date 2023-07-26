@@ -43,46 +43,6 @@ export function HomePage(): JSX.Element {
     setRedoHistory([]);
   };
 
-  const onUndoClick = () => {
-    const [lastHistory, ...restHistory] = history;
-    if (!lastHistory) {
-      return;
-    }
-
-    // TODO solve types
-    const action = lastHistory.action as keyof typeof taskActions;
-    const actionSet = taskActions[action];
-
-    const { state, output } = actionSet.undo(
-      taskState,
-      lastHistory.input as any,
-    );
-
-    setTaskState(state);
-    setHistory(restHistory);
-    setRedoHistory([buildTaskHistory(action, output), ...redoHistory]);
-  };
-
-  const onRedoClick = () => {
-    const [prevHistory, ...restRedoHistory] = redoHistory;
-    if (!prevHistory) {
-      return;
-    }
-
-    // TODO solve types
-    const action = prevHistory.action as keyof typeof taskActions;
-    const actionSet = taskActions[action];
-
-    const { state, output } = actionSet.redo(
-      taskState,
-      prevHistory.input as any,
-    );
-
-    setTaskState(state);
-    setHistory([buildTaskHistory(action, output), ...history]);
-    setRedoHistory(restRedoHistory);
-  };
-
   const onTaskDoneChange = (taskId: string, done: boolean) => {
     const { state, output } = taskActions.done.exec(taskState, {
       taskId,
@@ -123,6 +83,46 @@ export function HomePage(): JSX.Element {
     setTaskState(state);
     setHistory([buildTaskHistory("remove", output), ...history]);
     setRedoHistory([]);
+  };
+
+  const onUndoClick = () => {
+    const [lastHistory, ...restHistory] = history;
+    if (!lastHistory) {
+      return;
+    }
+
+    // TODO solve types
+    const action = lastHistory.action as keyof typeof taskActions;
+    const actionSet = taskActions[action];
+
+    const { state, output } = actionSet.undo(
+      taskState,
+      lastHistory.input as any,
+    );
+
+    setTaskState(state);
+    setHistory(restHistory);
+    setRedoHistory([buildTaskHistory(action, output), ...redoHistory]);
+  };
+
+  const onRedoClick = () => {
+    const [prevHistory, ...restRedoHistory] = redoHistory;
+    if (!prevHistory) {
+      return;
+    }
+
+    // TODO solve types
+    const action = prevHistory.action as keyof typeof taskActions;
+    const actionSet = taskActions[action];
+
+    const { state, output } = actionSet.redo(
+      taskState,
+      prevHistory.input as any,
+    );
+
+    setTaskState(state);
+    setHistory([buildTaskHistory(action, output), ...history]);
+    setRedoHistory(restRedoHistory);
   };
 
   return (
