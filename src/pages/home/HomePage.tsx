@@ -8,6 +8,7 @@ import { H2 } from "../../lib/style/H2";
 import { Task } from "../../lib/task/Task";
 import { taskActions } from "../../lib/task/TaskAction";
 import { buildTaskHistory, useTaskHistory } from "./history";
+import { Container } from "../../lib/layout/Container";
 
 const initialTasks: Task[] = [
   {
@@ -116,87 +117,89 @@ export function HomePage(): JSX.Element {
   };
 
   return (
-    <div className="m-4">
+    <div className="my-4">
       <Head>
         <title>History system</title>
         <link rel="icon" href="/icon-512.png" />
       </Head>
-      <VStack>
-        <H1>History system</H1>
-        <div className="flex gap-8 [&>*]:w-1/2">
-          <VStack>
-            <H2>Tasks</H2>
-            <HStack>
-              <Button onClick={onAddTaskClick}>Add task...</Button>
-              <Button onClick={() => console.log(tasks)}>Log</Button>
-            </HStack>
-            <ul>
-              {tasks.map((task) => (
-                <li
-                  className="
-                    flex gap-4
-                    hover:bg-slate-50
-                    [&>.controls]:invisible
-                    [&:hover>.controls]:visible
-                  "
-                  key={task.id}
-                >
-                  <label className="flex flex-1 gap-1 items-baseline hover:underline">
-                    <input
-                      checked={task.done}
-                      onChange={() => onTaskDoneChange(task.id, !task.done)}
-                      type="checkbox"
-                    />
-                    <span>
-                      {task.title} <small>({task.id})</small>
+      <Container>
+        <VStack>
+          <H1>History system</H1>
+          <div className="flex gap-8 [&>*]:w-1/2">
+            <VStack>
+              <H2>Tasks</H2>
+              <HStack>
+                <Button onClick={onAddTaskClick}>Add task...</Button>
+                <Button onClick={() => console.log(tasks)}>Log</Button>
+              </HStack>
+              <ul>
+                {tasks.map((task) => (
+                  <li
+                    className="
+                      flex gap-4
+                      hover:bg-slate-50
+                      [&>.controls]:invisible
+                      [&:hover>.controls]:visible
+                    "
+                    key={task.id}
+                  >
+                    <label className="flex flex-1 gap-1 items-baseline hover:underline">
+                      <input
+                        checked={task.done}
+                        onChange={() => onTaskDoneChange(task.id, !task.done)}
+                        type="checkbox"
+                      />
+                      <span>
+                        {task.title} <small>({task.id})</small>
+                      </span>
+                    </label>
+                    <span className="controls">
+                      <button
+                        className="p-1 hover:bg-slate-200"
+                        onClick={() => onEditClick(task)}
+                      >
+                        ✏
+                      </button>
+                      <button
+                        className="p-1 hover:bg-slate-200"
+                        onClick={() => onRemoveClick(task)}
+                      >
+                        🗑️
+                      </button>
                     </span>
-                  </label>
-                  <span className="controls">
-                    <button
-                      className="p-1 hover:bg-slate-200"
-                      onClick={() => onEditClick(task)}
-                    >
-                      ✏
-                    </button>
-                    <button
-                      className="p-1 hover:bg-slate-200"
-                      onClick={() => onRemoveClick(task)}
-                    >
-                      🗑️
-                    </button>
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </VStack>
-          <VStack>
-            <H2>History</H2>
-            <HStack>
-              <Button disabled={history.length < 1} onClick={onUndoClick}>
-                ← Undo
-              </Button>
-              <Button disabled={redoHistory.length < 1} onClick={onRedoClick}>
-                Redo →
-              </Button>
-            </HStack>
-            <ul className="[&>*]:border-t">
-              {[...history].reverse().map((history, index, { length }) => (
-                <li
-                  className={`${index + 1 === length && "bg-slate-100"}`}
-                  key={history.id}
-                >
-                  {history.action} {JSON.stringify(history.input)}
-                </li>
-              ))}
-              {redoHistory.map((history) => (
-                <li className="text-gray-400" key={history.id}>
-                  {history.action} {JSON.stringify(history.input)}
-                </li>
-              ))}
-            </ul>
-          </VStack>
-        </div>
-      </VStack>
+                  </li>
+                ))}
+              </ul>
+            </VStack>
+            <VStack>
+              <H2>History</H2>
+              <HStack>
+                <Button disabled={history.length < 1} onClick={onUndoClick}>
+                  ← Undo
+                </Button>
+                <Button disabled={redoHistory.length < 1} onClick={onRedoClick}>
+                  Redo →
+                </Button>
+              </HStack>
+              <ul className="[&>*]:border-t">
+                {[...history].reverse().map((history, index, { length }) => (
+                  <li
+                    className={`${index + 1 === length && "bg-slate-100"}`}
+                    key={history.id}
+                  >
+                    {history.action} {JSON.stringify(history.input)}
+                  </li>
+                ))}
+                {redoHistory.map((history) => (
+                  <li className="text-gray-400" key={history.id}>
+                    {history.action} {JSON.stringify(history.input)}
+                  </li>
+                ))}
+              </ul>
+            </VStack>
+          </div>
+        </VStack>
+      </Container>
     </div>
   );
 }
