@@ -28,7 +28,8 @@ const initialTasks: TaskState = {
 
 export function HomePage(): JSX.Element {
   const [taskState, setTaskState] = useState(initialTasks);
-  const [history, redoHistory, setHistory, setRedoHistory] = useTaskHistory();
+  const [history, redoHistory, setHistory, setRedoHistory, undo, redo] =
+    useTaskHistory();
 
   const onAddTaskClick = () => {
     const title = window.prompt("Task title");
@@ -86,43 +87,11 @@ export function HomePage(): JSX.Element {
   };
 
   const onUndoClick = () => {
-    const [lastHistory, ...restHistory] = history;
-    if (!lastHistory) {
-      return;
-    }
-
-    // TODO solve types
-    const action = lastHistory.action as keyof typeof taskActions;
-    const actionSet = taskActions[action];
-
-    const { state, output } = actionSet.undo(
-      taskState,
-      lastHistory.input as any,
-    );
-
-    setTaskState(state);
-    setHistory(restHistory);
-    setRedoHistory([buildTaskHistory(action, output), ...redoHistory]);
+    setTaskState(undo(taskState));
   };
 
   const onRedoClick = () => {
-    const [prevHistory, ...restRedoHistory] = redoHistory;
-    if (!prevHistory) {
-      return;
-    }
-
-    // TODO solve types
-    const action = prevHistory.action as keyof typeof taskActions;
-    const actionSet = taskActions[action];
-
-    const { state, output } = actionSet.redo(
-      taskState,
-      prevHistory.input as any,
-    );
-
-    setTaskState(state);
-    setHistory([buildTaskHistory(action, output), ...history]);
-    setRedoHistory(restRedoHistory);
+    setTaskState(redo(taskState));
   };
 
   return (
