@@ -9,7 +9,7 @@ import { H2 } from "../../lib/style/H2";
 import { Task } from "../../lib/task/Task";
 import { TaskState } from "../../lib/task/TaskState";
 import { taskActions } from "../../lib/task/taskActions";
-import { buildTaskHistory, useTaskHistory } from "./history";
+import { useTaskHistory } from "./history";
 
 const initialTasks: TaskState = {
   tasks: [
@@ -28,8 +28,7 @@ const initialTasks: TaskState = {
 
 export function HomePage(): JSX.Element {
   const [taskState, setTaskState] = useState(initialTasks);
-  const [history, redoHistory, setHistory, setRedoHistory, undo, redo] =
-    useTaskHistory();
+  const [history, redoHistory, addHistory, undo, redo] = useTaskHistory();
 
   const onAddTaskClick = () => {
     const title = window.prompt("Task title");
@@ -40,8 +39,7 @@ export function HomePage(): JSX.Element {
     const { state, output } = taskActions.add.exec(taskState, { title });
 
     setTaskState(state);
-    setHistory([buildTaskHistory("add", output), ...history]);
-    setRedoHistory([]);
+    addHistory("add", output);
   };
 
   const onTaskDoneChange = (taskId: string, done: boolean) => {
@@ -51,8 +49,7 @@ export function HomePage(): JSX.Element {
     });
 
     setTaskState(state);
-    setHistory([buildTaskHistory("done", output), ...history]);
-    setRedoHistory([]);
+    addHistory("done", output);
   };
 
   const onEditClick = (task: Task) => {
@@ -67,8 +64,7 @@ export function HomePage(): JSX.Element {
     });
 
     setTaskState(state);
-    setHistory([buildTaskHistory("update", output), ...history]);
-    setRedoHistory([]);
+    addHistory("update", output);
   };
 
   const onRemoveClick = (task: Task) => {
@@ -82,8 +78,7 @@ export function HomePage(): JSX.Element {
     });
 
     setTaskState(state);
-    setHistory([buildTaskHistory("remove", output), ...history]);
-    setRedoHistory([]);
+    addHistory("remove", output);
   };
 
   const onUndoClick = () => {

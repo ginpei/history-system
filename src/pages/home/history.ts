@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 import { TaskState } from "../../lib/task/TaskState";
 import { TaskActionInput, taskActions } from "../../lib/task/taskActions";
 
@@ -8,10 +8,10 @@ export interface History<T extends TaskActionInput, S extends "undo" | "redo"> {
   input: T[S];
 }
 
-export function buildTaskHistory<
-  T extends TaskActionInput,
-  S extends "undo" | "redo",
->(action: string, input: T[S]): History<T, S> {
+function buildTaskHistory<T extends TaskActionInput, S extends "undo" | "redo">(
+  action: string,
+  input: T[S],
+): History<T, S> {
   return {
     action,
     id: crypto.randomUUID(),
@@ -26,8 +26,7 @@ export function buildTaskHistory<
 export function useTaskHistory(): [
   History<TaskActionInput, "undo">[],
   History<TaskActionInput, "redo">[],
-  Dispatch<SetStateAction<History<TaskActionInput, "undo">[]>>,
-  Dispatch<SetStateAction<History<TaskActionInput, "redo">[]>>,
+  (...args: Parameters<typeof buildTaskHistory>) => void,
   (taskState: TaskState) => TaskState,
   (taskState: TaskState) => TaskState,
 ] {
@@ -62,6 +61,16 @@ export function useTaskHistory(): [
     [history, redoHistory],
   );
 
+  const add = useCallback(
+    (...args: Parameters<typeof buildTaskHistory>) => {
+      const [action, input] = args;
+      setHistory([buildTaskHistory(action, input), ...history]);
+      setRedoHistory([]);
+      // TODO
+    },
+    [history],
+  );
+
   const redo = useCallback(
     (taskState: TaskState): TaskState => {
       const [prevHistory, ...restRedoHistory] = redoHistory;
@@ -86,5 +95,5 @@ export function useTaskHistory(): [
     [history, redoHistory],
   );
 
-  return [history, redoHistory, setHistory, setRedoHistory, undo, redo];
+  return [history, redoHistory, add, undo, redo];
 }
