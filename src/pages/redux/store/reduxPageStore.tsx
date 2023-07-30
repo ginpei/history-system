@@ -64,11 +64,10 @@ export function useTasks(): Task[] {
 }
 
 export function useHistories(): [TaskState[], TaskState, TaskState[]] {
-  return useSelector((v: StateWithHistory<TaskState>) => [
-    v.past,
-    v.present,
-    v.future,
-  ]);
+  return useSelector(
+    (v: StateWithHistory<TaskState>) => [v.past, v.present, v.future],
+    (a, b) => a[0] === b[0] && a[1] === b[1] && a[2] === b[2],
+  );
 }
 
 export function useHasHistories(): [boolean, boolean] {
