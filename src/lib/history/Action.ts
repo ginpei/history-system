@@ -4,7 +4,7 @@ interface ActionInputMap {
   redo: Record<string, unknown>;
 }
 
-export type ActionInput<Map extends ActionInputMap> = {
+export type ActionInput<Map extends ActionInputMap = ActionInputMap> = {
   exec: Map["exec"];
   undo: Map["undo"];
   redo: Map["redo"];

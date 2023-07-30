@@ -1,17 +1,20 @@
 import { useCallback, useState } from "react";
+import { ActionInput } from "../../lib/history/Action";
 import { TaskState } from "../../lib/task/TaskState";
 import { TaskActionInput, taskActions } from "../../lib/task/taskActions";
 
-export interface TaskHistory<S extends "undo" | "redo"> {
+interface History<T extends "undo" | "redo", Input extends ActionInput> {
   action: string;
   id: string;
-  input: TaskActionInput[S];
+  input: Input[T];
 }
 
-function buildTaskHistory<S extends "undo" | "redo">(
+type TaskHistory<T extends "undo" | "redo"> = History<T, TaskActionInput>;
+
+function buildTaskHistory<T extends "undo" | "redo">(
   action: string,
-  input: TaskActionInput[S],
-): TaskHistory<S> {
+  input: TaskActionInput[T],
+): TaskHistory<T> {
   return {
     action,
     id: crypto.randomUUID(),
