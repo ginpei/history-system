@@ -27,7 +27,7 @@ const initialTasks: TaskState = {
   ],
 };
 
-export function HomePage(): JSX.Element {
+export function ReduxPage(): JSX.Element {
   const [taskState, setTaskState] = useState(initialTasks);
   const [history, redoHistory, addHistory, undo, redo] = useTaskHistory();
 
@@ -93,14 +93,14 @@ export function HomePage(): JSX.Element {
   return (
     <div className="my-4">
       <Head>
-        <title>History system</title>
+        <title>History by Redux</title>
         <link rel="icon" href="/icon-512.png" />
       </Head>
       <Container>
         <VStack>
-          <H1>History system</H1>
+          <H1>History by Redux</H1>
           <p>
-            <A href="/redux">Redux</A>
+            <A href="/">Home</A>
           </p>
           <div className="flex gap-8 [&>*]:w-1/2">
             <VStack>
