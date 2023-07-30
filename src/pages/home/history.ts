@@ -1,9 +1,9 @@
 import { useCallback, useState } from "react";
-import { History, buildHistory } from "../../lib/history/History";
+import { History, HistoryType, buildHistory } from "../../lib/history/History";
 import { TaskState } from "../../lib/task/TaskState";
 import { TaskActionInput, taskActions } from "../../lib/task/taskActions";
 
-type TaskHistory<T extends "undo" | "redo"> = History<T, TaskActionInput>;
+type TaskHistory<T extends HistoryType> = History<T, TaskActionInput>;
 
 /**
  * @example
@@ -12,10 +12,7 @@ type TaskHistory<T extends "undo" | "redo"> = History<T, TaskActionInput>;
 export function useTaskHistory(): [
   TaskHistory<"undo">[],
   TaskHistory<"redo">[],
-  <T extends "undo" | "redo">(
-    action: string,
-    input: TaskActionInput[T],
-  ) => void,
+  <T extends HistoryType>(action: string, input: TaskActionInput[T]) => void,
   (taskState: TaskState) => TaskState,
   (taskState: TaskState) => TaskState,
 ] {
