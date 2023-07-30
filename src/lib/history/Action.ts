@@ -4,10 +4,10 @@ interface ActionInputMap {
   redo: Record<string, unknown>;
 }
 
-export type ActionInput<T extends ActionInputMap> = {
-  exec: T["exec"];
-  undo: T["undo"];
-  redo: T["redo"];
+export type ActionInput<Map extends ActionInputMap> = {
+  exec: Map["exec"];
+  undo: Map["undo"];
+  redo: Map["redo"];
 };
 
 export type ActionSet<
