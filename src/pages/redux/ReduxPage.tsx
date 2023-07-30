@@ -114,9 +114,7 @@ function TaskDashboard() {
                   onChange={() => onTaskDoneChange(task.id, !task.done)}
                   type="checkbox"
                 />
-                <span>
-                  {task.title} <small>({task.id})</small>
-                </span>
+                <span>{task.title}</span>
               </label>
               <span className="controls">
                 <button
