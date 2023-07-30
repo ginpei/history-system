@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { useDispatch } from "react-redux";
+import { ActionCreators } from "redux-undo";
 import { Container } from "../../lib/layout/Container";
 import { HStack } from "../../lib/layout/HStack";
 import { VStack } from "../../lib/layout/VStack";
@@ -12,6 +13,7 @@ import { findTask } from "../../lib/task/taskArrayManipulators";
 import {
   ReduxPageStateProvider,
   taskActions,
+  useHasHistories,
   useTasks,
 } from "./store/reduxPageStore";
 
@@ -40,6 +42,7 @@ export function ReduxPage(): JSX.Element {
 function TaskDashboard() {
   const tasks = useTasks();
   const dispatch = useDispatch();
+  const [hasPast, hasFuture] = useHasHistories();
   const history: any[] = []; // TODO
   const redoHistory: any[] = []; // TODO
 
@@ -79,11 +82,11 @@ function TaskDashboard() {
   };
 
   const onUndoClick = () => {
-    // TODO
+    dispatch(ActionCreators.undo());
   };
 
   const onRedoClick = () => {
-    // TODO
+    dispatch(ActionCreators.redo());
   };
 
   return (
@@ -136,10 +139,10 @@ function TaskDashboard() {
       <VStack>
         <H2>History</H2>
         <HStack>
-          <Button disabled={history.length < 1} onClick={onUndoClick}>
+          <Button disabled={!hasPast} onClick={onUndoClick}>
             ← Undo
           </Button>
-          <Button disabled={redoHistory.length < 1} onClick={onRedoClick}>
+          <Button disabled={!hasFuture} onClick={onRedoClick}>
             Redo →
           </Button>
         </HStack>

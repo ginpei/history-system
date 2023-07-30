@@ -1,6 +1,7 @@
 import { PayloadAction, configureStore, createSlice } from "@reduxjs/toolkit";
 import React from "react";
 import { Provider, useSelector } from "react-redux";
+import undoable, { StateWithHistory } from "redux-undo";
 import { Task } from "../../../lib/task/Task";
 import { TaskState } from "../../../lib/task/TaskState";
 
@@ -32,7 +33,7 @@ const slice = createSlice({
 export const taskActions = slice.actions;
 
 const store = configureStore({
-  reducer: slice.reducer,
+  reducer: undoable(slice.reducer),
 });
 
 export function ReduxPageStateProvider(props: {
@@ -42,5 +43,27 @@ export function ReduxPageStateProvider(props: {
 }
 
 export function useTasks(): Task[] {
-  return useSelector((v: TaskState) => v.tasks);
+  return useSelector<StateWithHistory<TaskState>, Task[]>(
+    (v) => v.present.tasks,
+  );
+}
+
+export function useHasHistories(): [boolean, boolean] {
+  let lastState: StateWithHistory<TaskState> | null = null;
+  let lastValue: [boolean, boolean] = [false, false];
+
+  return useSelector((state: StateWithHistory<TaskState>) => {
+    if (lastState === state) {
+      return lastValue;
+    }
+    lastState = state;
+
+    const value: [boolean, boolean] = [
+      state.past.length > 0,
+      state.future.length > 0,
+    ];
+    lastValue = value;
+
+    return value;
+  });
 }
