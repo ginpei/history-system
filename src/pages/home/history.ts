@@ -2,13 +2,14 @@ import { useCallback, useState } from "react";
 import { History } from "../../lib/history/History";
 import { TaskState } from "../../lib/task/TaskState";
 import { TaskActionInput, taskActions } from "../../lib/task/taskActions";
+import { ActionInput } from "../../lib/history/Action";
 
 type TaskHistory<T extends "undo" | "redo"> = History<T, TaskActionInput>;
 
-function buildTaskHistory<T extends "undo" | "redo">(
+function buildHistory<T extends "undo" | "redo", Input extends ActionInput>(
   action: string,
-  input: TaskActionInput[T],
-): TaskHistory<T> {
+  input: Input[T],
+): History<T, Input> {
   return {
     action,
     id: crypto.randomUUID(),
@@ -23,7 +24,10 @@ function buildTaskHistory<T extends "undo" | "redo">(
 export function useTaskHistory(): [
   TaskHistory<"undo">[],
   TaskHistory<"redo">[],
-  (...args: Parameters<typeof buildTaskHistory>) => void,
+  <T extends "undo" | "redo">(
+    action: string,
+    input: TaskActionInput[T],
+  ) => void,
   (taskState: TaskState) => TaskState,
   (taskState: TaskState) => TaskState,
 ] {
@@ -47,7 +51,7 @@ export function useTaskHistory(): [
       );
 
       setHistory(restHistory);
-      setRedoHistory([buildTaskHistory(action, output), ...redoHistory]);
+      setRedoHistory([buildHistory(action, output), ...redoHistory]);
 
       return state;
     },
@@ -55,11 +59,9 @@ export function useTaskHistory(): [
   );
 
   const add = useCallback(
-    (...args: Parameters<typeof buildTaskHistory>) => {
-      const [action, input] = args;
-      setHistory([buildTaskHistory(action, input), ...history]);
+    (action: string, input: TaskActionInput["undo"]) => {
+      setHistory([buildHistory(action, input), ...history]);
       setRedoHistory([]);
-      // TODO
     },
     [history],
   );
@@ -80,7 +82,7 @@ export function useTaskHistory(): [
         prevHistory.input as any,
       );
 
-      setHistory([buildTaskHistory(action, output), ...history]);
+      setHistory([buildHistory(action, output), ...history]);
       setRedoHistory(restRedoHistory);
 
       return state;
