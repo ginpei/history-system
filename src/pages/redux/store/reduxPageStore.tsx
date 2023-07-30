@@ -49,21 +49,11 @@ export function useTasks(): Task[] {
 }
 
 export function useHasHistories(): [boolean, boolean] {
-  let lastState: StateWithHistory<TaskState> | null = null;
-  let lastValue: [boolean, boolean] = [false, false];
-
-  return useSelector((state: StateWithHistory<TaskState>) => {
-    if (lastState === state) {
-      return lastValue;
-    }
-    lastState = state;
-
-    const value: [boolean, boolean] = [
+  return useSelector(
+    (state: StateWithHistory<TaskState>) => [
       state.past.length > 0,
       state.future.length > 0,
-    ];
-    lastValue = value;
-
-    return value;
-  });
+    ],
+    (a, b) => a[0] === b[0] && a[1] === b[1],
+  );
 }
