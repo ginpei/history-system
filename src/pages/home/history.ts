@@ -1,13 +1,7 @@
 import { useCallback, useState } from "react";
-import { ActionInput } from "../../lib/history/Action";
+import { History } from "../../lib/history/History";
 import { TaskState } from "../../lib/task/TaskState";
 import { TaskActionInput, taskActions } from "../../lib/task/taskActions";
-
-interface History<T extends "undo" | "redo", Input extends ActionInput> {
-  action: string;
-  id: string;
-  input: Input[T];
-}
 
 type TaskHistory<T extends "undo" | "redo"> = History<T, TaskActionInput>;
 
