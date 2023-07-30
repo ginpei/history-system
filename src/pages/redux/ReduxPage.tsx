@@ -14,6 +14,7 @@ import {
   ReduxPageStateProvider,
   taskActions,
   useHasHistories,
+  useHistories,
   useTasks,
 } from "./store/reduxPageStore";
 
@@ -43,8 +44,7 @@ function TaskDashboard() {
   const tasks = useTasks();
   const dispatch = useDispatch();
   const [hasPast, hasFuture] = useHasHistories();
-  const history: any[] = []; // TODO
-  const redoHistory: any[] = []; // TODO
+  const [pastHistories, presentHistory, futureHistories] = useHistories();
 
   const onAddTaskClick = () => {
     const title = window.prompt("Task title");
@@ -147,17 +147,15 @@ function TaskDashboard() {
           </Button>
         </HStack>
         <ul className="[&>*]:border-t">
-          {[...history].reverse().map((history, index, { length }) => (
-            <li
-              className={`${index + 1 === length && "bg-slate-100"}`}
-              key={history.id}
-            >
-              {history.action} {JSON.stringify(history.input)}
-            </li>
+          {pastHistories.map((history) => (
+            <li key={history.id}>{history.title}</li>
           ))}
-          {redoHistory.map((history) => (
+          <li className="bg-slate-100" key={presentHistory.id}>
+            {presentHistory.title}
+          </li>
+          {futureHistories.map((history) => (
             <li className="text-gray-400" key={history.id}>
-              {history.action} {JSON.stringify(history.input)}
+              {history.title}
             </li>
           ))}
         </ul>
