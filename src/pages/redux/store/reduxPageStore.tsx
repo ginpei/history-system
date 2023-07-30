@@ -1,4 +1,4 @@
-import { configureStore, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, configureStore, createSlice } from "@reduxjs/toolkit";
 import React from "react";
 import { Provider, useSelector } from "react-redux";
 import { Task } from "../../../lib/task/Task";
@@ -12,13 +12,13 @@ const slice = createSlice({
   name: "reduxPage",
   initialState,
   reducers: {
-    add(state, action: { payload: Task; type: string }) {
+    add(state, action: PayloadAction<Task>) {
       state.tasks.push(action.payload);
     },
-    remove(state, action: { payload: { id: string }; type: string }) {
+    remove(state, action: PayloadAction<Pick<Task, "id">>) {
       state.tasks = state.tasks.filter((v) => v.id !== action.payload.id);
     },
-    update(state, action: { payload: Task; type: string }) {
+    update(state, action: PayloadAction<Task>) {
       state.tasks = state.tasks.map((v) => {
         if (v.id === action.payload.id) {
           return action.payload;
