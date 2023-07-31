@@ -21,6 +21,30 @@ export function TaskSection(): JSX.Element {
     dispatch(taskActions.add(task));
   };
 
+  return (
+    <VStack>
+      <H2>Tasks</H2>
+      <HStack>
+        <Button onClick={onAddTaskClick}>Add task...</Button>
+        <Button onClick={() => console.log(tasks)}>Log</Button>
+      </HStack>
+      <ul>
+        {tasks.map((task) => (
+          <TaskItem key={task.id} task={task} tasks={tasks} />
+        ))}
+      </ul>
+    </VStack>
+  );
+}
+
+interface TaskItemProps {
+  task: Task;
+  tasks: Task[];
+}
+
+function TaskItem({ task, tasks }: TaskItemProps): JSX.Element {
+  const dispatch = useDispatch();
+
   const onTaskDoneChange = (taskId: string, done: boolean) => {
     const task = findTask(tasks, taskId);
     dispatch(taskActions.update({ ...task, done }));
@@ -47,48 +71,36 @@ export function TaskSection(): JSX.Element {
   };
 
   return (
-    <VStack>
-      <H2>Tasks</H2>
-      <HStack>
-        <Button onClick={onAddTaskClick}>Add task...</Button>
-        <Button onClick={() => console.log(tasks)}>Log</Button>
-      </HStack>
-      <ul>
-        {tasks.map((task) => (
-          <li
-            className="
-            flex gap-4
-            hover:bg-slate-50
-            [&>.controls]:invisible
-            [&:hover>.controls]:visible
-          "
-            key={task.id}
-          >
-            <label className="flex flex-1 gap-1 items-baseline hover:underline">
-              <input
-                checked={task.done}
-                onChange={() => onTaskDoneChange(task.id, !task.done)}
-                type="checkbox"
-              />
-              <span>{task.title}</span>
-            </label>
-            <span className="controls">
-              <button
-                className="p-1 hover:bg-slate-200"
-                onClick={() => onEditClick(task.id)}
-              >
-                ✏
-              </button>
-              <button
-                className="p-1 hover:bg-slate-200"
-                onClick={() => onRemoveClick(task)}
-              >
-                🗑️
-              </button>
-            </span>
-          </li>
-        ))}
-      </ul>
-    </VStack>
+    <li
+      className="
+        flex gap-4
+        hover:bg-slate-50
+        [&>.controls]:invisible
+        [&:hover>.controls]:visible
+      "
+    >
+      <label className="flex flex-1 gap-1 items-baseline hover:underline">
+        <input
+          checked={task.done}
+          onChange={() => onTaskDoneChange(task.id, !task.done)}
+          type="checkbox"
+        />
+        <span>{task.title}</span>
+      </label>
+      <span className="controls">
+        <button
+          className="p-1 hover:bg-slate-200"
+          onClick={() => onEditClick(task.id)}
+        >
+          ✏
+        </button>
+        <button
+          className="p-1 hover:bg-slate-200"
+          onClick={() => onRemoveClick(task)}
+        >
+          🗑️
+        </button>
+      </span>
+    </li>
   );
 }
