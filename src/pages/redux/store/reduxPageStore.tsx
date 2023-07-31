@@ -18,29 +18,23 @@ const slice = createSlice({
   reducers: {
     add(state, action: PayloadAction<Task>) {
       const task = action.payload;
-      state.id = crypto.randomUUID();
-      state.title = `Added ${task.title}`;
-
-      state.tasks.push(task);
+      const title = `Added ${task.title}`;
+      const tasks = [...state.tasks, task];
+      return updateState(state, title, { tasks });
     },
     remove(state, action: PayloadAction<Pick<Task, "id">>) {
       const task = findTask(state.tasks, action.payload.id);
-      state.id = crypto.randomUUID();
-      state.title = `Removed ${task.title}`;
-
-      state.tasks = state.tasks.filter((v) => v.id !== action.payload.id);
+      const title = `Removed ${task.title}`;
+      const tasks = state.tasks.filter((v) => v.id !== action.payload.id);
+      return updateState(state, title, { tasks });
     },
     update(state, action: PayloadAction<Task>) {
       const task = action.payload;
-      state.id = crypto.randomUUID();
-      state.title = `Updated ${task.title}`;
-
-      state.tasks = state.tasks.map((v) => {
-        if (v.id === action.payload.id) {
-          return action.payload;
-        }
-        return v;
-      });
+      const title = `Updated ${task.title}`;
+      const tasks = state.tasks.map((v) =>
+        v.id === action.payload.id ? action.payload : v,
+      );
+      return updateState(state, title, { tasks });
     },
   },
 });
@@ -50,6 +44,19 @@ export const taskActions = slice.actions;
 const store = configureStore({
   reducer: undoable(slice.reducer),
 });
+
+function updateState<T extends { id: string; title: string }>(
+  state: T,
+  title: string,
+  updates: Partial<Omit<T, "id" | "title">>,
+): T {
+  return {
+    ...state,
+    ...updates,
+    id: crypto.randomUUID(),
+    title,
+  };
+}
 
 export function ReduxPageStateProvider(props: {
   children: React.ReactNode;
