@@ -1,7 +1,6 @@
+import { State } from "../store/State";
 import { Task } from "./Task";
 
-export interface TaskState {
-  id: string;
+export interface TaskState extends State {
   tasks: Task[];
-  title: string;
 }
