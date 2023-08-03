@@ -5,10 +5,10 @@ export interface AppHistory {
   title: string;
 }
 
-export type HistoryReducer<Payload, H extends AppHistory> = (
-  state: H,
+export type HistoryReducer<Payload, State extends AppHistory> = (
+  state: State,
   action: PayloadAction<Payload>,
-) => H;
+) => State;
 
 export function buildHistory(title: string): AppHistory {
   return {

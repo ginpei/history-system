@@ -1,15 +1,12 @@
-import { AppHistory, buildHistory } from "../../../lib/history/AppHistory";
+import { StateWithHistory } from "redux-undo";
+import { AppHistory } from "../../../lib/history/AppHistory";
 import { Task } from "../../../lib/task/Task";
 
-export interface TasksPageHistory extends AppHistory {
-  hideCompleted: boolean;
-  tasks: Task[];
+export interface TasksPageState {
+  tasks: StateWithHistory<TasksStoreValue>;
 }
 
-export function buildTasksPageHistory(title: string): TasksPageHistory {
-  return {
-    ...buildHistory(title),
-    hideCompleted: false,
-    tasks: [],
-  };
+export interface TasksStoreValue extends AppHistory {
+  hideCompleted: boolean;
+  tasks: Task[];
 }

@@ -1,23 +1,30 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
 import React from "react";
 import { Provider, useSelector } from "react-redux";
-import undoable, { StateWithHistory } from "redux-undo";
+import undoable from "redux-undo";
+import { buildHistory } from "../../../lib/history/AppHistory";
 import { Task } from "../../../lib/task/Task";
-import { TasksPageHistory, buildTasksPageHistory } from "./TasksPageHistory";
-import * as reducers from "./reducers";
+import { TasksPageState, TasksStoreValue } from "./TasksPageHistory";
+import * as tasksReducers from "./reducers";
 
-const initialState = buildTasksPageHistory("Initial");
+const initialTaskState: TasksStoreValue = {
+  ...buildHistory("Initial"),
+  hideCompleted: false,
+  tasks: [],
+};
 
 const slice = createSlice({
-  name: "tasksPage",
-  initialState,
-  reducers,
+  name: "tasks",
+  initialState: initialTaskState,
+  reducers: tasksReducers,
 });
 
 export const taskActions = slice.actions;
 
 const store = configureStore({
-  reducer: undoable(slice.reducer),
+  reducer: {
+    tasks: undoable(slice.reducer),
+  },
 });
 
 export function TasksPageStateProvider(props: {
@@ -27,13 +34,9 @@ export function TasksPageStateProvider(props: {
 }
 
 export function useTasks(): Task[] {
-  return useSelector<StateWithHistory<TasksPageHistory>, Task[]>(
-    (v) => v.present.tasks,
-  );
+  return useSelector<TasksPageState, Task[]>((v) => v.tasks.present.tasks);
 }
 
-export function useHideCompleted(): TasksPageHistory["hideCompleted"] {
-  return useSelector(
-    (v: StateWithHistory<TasksPageHistory>) => v.present.hideCompleted,
-  );
+export function useHideCompleted(): TasksStoreValue["hideCompleted"] {
+  return useSelector((v: TasksPageState) => v.tasks.present.hideCompleted);
 }

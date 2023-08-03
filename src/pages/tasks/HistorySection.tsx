@@ -1,16 +1,14 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ActionCreators } from "redux-undo";
-import { useHistories } from "../../lib/history/appHistoryHooks";
 import { HStack } from "../../lib/layout/HStack";
 import { VStack } from "../../lib/layout/VStack";
 import { Button } from "../../lib/style/Button";
 import { H2 } from "../../lib/style/H2";
-import { TasksPageHistory } from "./store/TasksPageHistory";
+import { TasksPageState, TasksStoreValue } from "./store/TasksPageHistory";
 
 export function HistorySection(): JSX.Element {
   const dispatch = useDispatch();
-  const [pastHistories, presentHistory, futureHistories] =
-    useHistories<TasksPageHistory>();
+  const [pastHistories, presentHistory, futureHistories] = useHistories();
 
   const onUndoClick = () => {
     dispatch(ActionCreators.undo());
@@ -45,5 +43,23 @@ export function HistorySection(): JSX.Element {
         ))}
       </ul>
     </VStack>
+  );
+}
+
+// TODO extract
+function useHistories(): [
+  TasksStoreValue[],
+  TasksStoreValue,
+  TasksStoreValue[],
+] {
+  return useSelector(
+    (
+      v: TasksPageState,
+    ): [TasksStoreValue[], TasksStoreValue, TasksStoreValue[]] => [
+      v.tasks.past,
+      v.tasks.present,
+      v.tasks.future,
+    ],
+    (a, b) => a[0] === b[0] && a[1] === b[1] && a[2] === b[2],
   );
 }

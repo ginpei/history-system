@@ -1,9 +1,11 @@
+// TODO rename to `tasksReducer`
+
 import { HistoryReducer, updateHistory } from "../../../lib/history/AppHistory";
 import { Task } from "../../../lib/task/Task";
 import { findTask } from "../../../lib/task/taskArrayManipulators";
-import { TasksPageHistory } from "./TasksPageHistory";
+import { TasksStoreValue } from "./TasksPageHistory";
 
-type TaskPageReducer<Payload> = HistoryReducer<Payload, TasksPageHistory>;
+type TaskPageReducer<Payload> = HistoryReducer<Payload, TasksStoreValue>;
 
 export const add: TaskPageReducer<Task> = (state, action) => {
   const task = action.payload;
