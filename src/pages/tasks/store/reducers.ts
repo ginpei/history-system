@@ -1,4 +1,4 @@
-import { HistoryReducer, updateHistory } from "../../../lib/history/History";
+import { HistoryReducer, updateHistory } from "../../../lib/history/AppHistory";
 import { Task } from "../../../lib/task/Task";
 import { findTask } from "../../../lib/task/taskArrayManipulators";
 import { TasksPageHistory } from "./TasksPageHistory";

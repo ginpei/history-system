@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { ActionCreators } from "redux-undo";
-import { useHistories } from "../../lib/history/historyHooks";
+import { useHistories } from "../../lib/history/appHistoryHooks";
 import { HStack } from "../../lib/layout/HStack";
 import { VStack } from "../../lib/layout/VStack";
 import { Button } from "../../lib/style/Button";

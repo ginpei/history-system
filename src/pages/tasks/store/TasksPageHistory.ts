@@ -1,7 +1,7 @@
-import { History, buildHistory } from "../../../lib/history/History";
+import { AppHistory, buildHistory } from "../../../lib/history/AppHistory";
 import { Task } from "../../../lib/task/Task";
 
-export interface TasksPageHistory extends History {
+export interface TasksPageHistory extends AppHistory {
   hideCompleted: boolean;
   tasks: Task[];
 }
