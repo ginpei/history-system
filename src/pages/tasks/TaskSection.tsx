@@ -56,6 +56,11 @@ export function TaskSection(): JSX.Element {
               <TaskItem key={task.id} task={task} tasks={tasks} />
             ),
         )}
+        {tasks.length === 0 && (
+          <li>
+            <small>(No tasks)</small>
+          </li>
+        )}
       </ul>
     </VStack>
   );
