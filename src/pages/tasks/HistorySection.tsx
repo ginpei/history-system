@@ -5,12 +5,12 @@ import { HStack } from "../../lib/layout/HStack";
 import { VStack } from "../../lib/layout/VStack";
 import { Button } from "../../lib/style/Button";
 import { H2 } from "../../lib/style/H2";
-import { ReduxPageHistory } from "./store/ReduxPageHistory";
+import { TasksPageHistory } from "./store/TasksPageHistory";
 
 export function HistorySection(): JSX.Element {
   const dispatch = useDispatch();
   const [pastHistories, presentHistory, futureHistories] =
-    useHistories<ReduxPageHistory>();
+    useHistories<TasksPageHistory>();
 
   const onUndoClick = () => {
     dispatch(ActionCreators.undo());

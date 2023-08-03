@@ -5,11 +5,11 @@ import { A } from "../../lib/style/A";
 import { H1 } from "../../lib/style/H1";
 import { HistorySection } from "./HistorySection";
 import { TaskSection } from "./TaskSection";
-import { ReduxPageStateProvider } from "./store/reduxPageStore";
+import { TasksPageStateProvider } from "./store/tasksPageStore";
 
 export function TasksPage(): JSX.Element {
   return (
-    <ReduxPageStateProvider>
+    <TasksPageStateProvider>
       <div className="my-4">
         <Head>
           <title>Tasks with history system</title>
@@ -28,6 +28,6 @@ export function TasksPage(): JSX.Element {
           </VStack>
         </Container>
       </div>
-    </ReduxPageStateProvider>
+    </TasksPageStateProvider>
   );
 }

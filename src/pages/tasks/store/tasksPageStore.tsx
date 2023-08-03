@@ -3,13 +3,13 @@ import React from "react";
 import { Provider, useSelector } from "react-redux";
 import undoable, { StateWithHistory } from "redux-undo";
 import { Task } from "../../../lib/task/Task";
-import { ReduxPageHistory, buildReduxPageHistory } from "./ReduxPageHistory";
+import { TasksPageHistory, buildTasksPageHistory } from "./TasksPageHistory";
 import * as reducers from "./reducers";
 
-const initialState = buildReduxPageHistory("Initial");
+const initialState = buildTasksPageHistory("Initial");
 
 const slice = createSlice({
-  name: "reduxPage",
+  name: "tasksPage",
   initialState,
   reducers,
 });
@@ -20,14 +20,14 @@ const store = configureStore({
   reducer: undoable(slice.reducer),
 });
 
-export function ReduxPageStateProvider(props: {
+export function TasksPageStateProvider(props: {
   children: React.ReactNode;
 }): JSX.Element {
   return <Provider store={store}>{props.children}</Provider>;
 }
 
 export function useTasks(): Task[] {
-  return useSelector<StateWithHistory<ReduxPageHistory>, Task[]>(
+  return useSelector<StateWithHistory<TasksPageHistory>, Task[]>(
     (v) => v.present.tasks,
   );
 }

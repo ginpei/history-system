@@ -5,7 +5,7 @@ import { Button } from "../../lib/style/Button";
 import { H2 } from "../../lib/style/H2";
 import { buildTask, Task } from "../../lib/task/Task";
 import { findTask } from "../../lib/task/taskArrayManipulators";
-import { taskActions, useTasks } from "./store/reduxPageStore";
+import { taskActions, useTasks } from "./store/tasksPageStore";
 
 export function TaskSection(): JSX.Element {
   const tasks = useTasks();

@@ -1,11 +1,11 @@
 import { History, buildHistory } from "../../../lib/history/History";
 import { Task } from "../../../lib/task/Task";
 
-export interface ReduxPageHistory extends History {
+export interface TasksPageHistory extends History {
   tasks: Task[];
 }
 
-export function buildReduxPageHistory(title: string): ReduxPageHistory {
+export function buildTasksPageHistory(title: string): TasksPageHistory {
   return {
     ...buildHistory(title),
     tasks: [],
