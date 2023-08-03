@@ -1,7 +1,14 @@
+import { PayloadAction } from "@reduxjs/toolkit";
+
 export interface History {
   id: string;
   title: string;
 }
+
+export type HistoryReducer<Payload, H extends History> = (
+  state: H,
+  action: PayloadAction<Payload>,
+) => H;
 
 export function buildHistory(title: string): History {
   return {
