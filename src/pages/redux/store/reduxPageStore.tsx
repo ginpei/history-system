@@ -3,14 +3,10 @@ import React from "react";
 import { Provider, useSelector } from "react-redux";
 import undoable, { StateWithHistory } from "redux-undo";
 import { Task } from "../../../lib/task/Task";
-import { TaskHistory } from "../../../lib/task/TaskState";
+import { TaskHistory, buildTaskHistory } from "../../../lib/task/TaskState";
 import * as reducers from "./reducers";
 
-const initialState: TaskHistory = {
-  id: crypto.randomUUID(),
-  tasks: [],
-  title: "Initial",
-};
+const initialState = buildTaskHistory("Initial");
 
 const slice = createSlice({
   name: "reduxPage",

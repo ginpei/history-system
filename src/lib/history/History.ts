@@ -3,6 +3,13 @@ export interface History {
   title: string;
 }
 
+export function buildHistory(title: string): History {
+  return {
+    id: crypto.randomUUID(),
+    title,
+  };
+}
+
 export function updateHistory<T extends History>(
   state: T,
   title: string,
