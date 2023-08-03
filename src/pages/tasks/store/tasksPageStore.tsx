@@ -31,3 +31,9 @@ export function useTasks(): Task[] {
     (v) => v.present.tasks,
   );
 }
+
+export function useHideCompleted(): TasksPageHistory["hideCompleted"] {
+  return useSelector(
+    (v: StateWithHistory<TasksPageHistory>) => v.present.hideCompleted,
+  );
+}

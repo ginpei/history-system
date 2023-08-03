@@ -29,3 +29,12 @@ export function update(state: TasksPageHistory, action: PayloadAction<Task>) {
   );
   return updateHistory(state, title, { tasks });
 }
+
+export function toggleHideCompleted(
+  state: TasksPageHistory,
+  action: PayloadAction<{ hideCompleted: boolean }>,
+) {
+  const title = `Toggled hide completed`;
+  const hideCompleted = action.payload.hideCompleted;
+  return updateHistory(state, title, { hideCompleted });
+}

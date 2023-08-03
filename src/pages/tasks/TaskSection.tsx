@@ -2,13 +2,20 @@ import { useDispatch } from "react-redux";
 import { HStack } from "../../lib/layout/HStack";
 import { VStack } from "../../lib/layout/VStack";
 import { Button } from "../../lib/style/Button";
+import { Checkbox } from "../../lib/style/Checkbox";
 import { H2 } from "../../lib/style/H2";
 import { buildTask, Task } from "../../lib/task/Task";
 import { findTask } from "../../lib/task/taskArrayManipulators";
-import { taskActions, useTasks } from "./store/tasksPageStore";
+import {
+  taskActions,
+  useHideCompleted,
+  useTasks,
+} from "./store/tasksPageStore";
+import { ChangeEventHandler } from "react";
 
 export function TaskSection(): JSX.Element {
   const tasks = useTasks();
+  const hideCompleted = useHideCompleted();
   const dispatch = useDispatch();
 
   const onAddTaskClick = () => {
@@ -21,6 +28,14 @@ export function TaskSection(): JSX.Element {
     dispatch(taskActions.add(task));
   };
 
+  const onHideCompletedChange: ChangeEventHandler<HTMLInputElement> = (
+    event,
+  ) => {
+    dispatch(
+      taskActions.toggleHideCompleted({ hideCompleted: event.target.checked }),
+    );
+  };
+
   return (
     <VStack>
       <H2>Tasks</H2>
@@ -28,10 +43,19 @@ export function TaskSection(): JSX.Element {
         <Button onClick={onAddTaskClick}>Add task...</Button>
         <Button onClick={() => console.log(tasks)}>Log</Button>
       </HStack>
+      <HStack>
+        <Checkbox checked={hideCompleted} onChange={onHideCompletedChange}>
+          Hide completed tasks
+        </Checkbox>
+      </HStack>
+      <hr />
       <ul>
-        {tasks.map((task) => (
-          <TaskItem key={task.id} task={task} tasks={tasks} />
-        ))}
+        {tasks.map(
+          (task) =>
+            (hideCompleted ? !task.done : true) && (
+              <TaskItem key={task.id} task={task} tasks={tasks} />
+            ),
+        )}
       </ul>
     </VStack>
   );
