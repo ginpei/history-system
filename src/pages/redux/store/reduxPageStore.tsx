@@ -3,10 +3,10 @@ import React from "react";
 import { Provider, useSelector } from "react-redux";
 import undoable, { StateWithHistory } from "redux-undo";
 import { Task } from "../../../lib/task/Task";
-import { TaskState } from "../../../lib/task/TaskState";
+import { TaskHistory } from "../../../lib/task/TaskState";
 import * as reducers from "./reducers";
 
-const initialState: TaskState = {
+const initialState: TaskHistory = {
   id: crypto.randomUUID(),
   tasks: [],
   title: "Initial",
@@ -31,7 +31,7 @@ export function ReduxPageStateProvider(props: {
 }
 
 export function useTasks(): Task[] {
-  return useSelector<StateWithHistory<TaskState>, Task[]>(
+  return useSelector<StateWithHistory<TaskHistory>, Task[]>(
     (v) => v.present.tasks,
   );
 }

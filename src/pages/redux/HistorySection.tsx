@@ -1,16 +1,16 @@
 import { useDispatch } from "react-redux";
 import { ActionCreators } from "redux-undo";
+import { useHistories } from "../../lib/history/historyHooks";
 import { HStack } from "../../lib/layout/HStack";
 import { VStack } from "../../lib/layout/VStack";
-import { useHistories } from "../../lib/store/stateHooks";
 import { Button } from "../../lib/style/Button";
 import { H2 } from "../../lib/style/H2";
-import { TaskState } from "../../lib/task/TaskState";
+import { TaskHistory } from "../../lib/task/TaskState";
 
 export function HistorySection(): JSX.Element {
   const dispatch = useDispatch();
   const [pastHistories, presentHistory, futureHistories] =
-    useHistories<TaskState>();
+    useHistories<TaskHistory>();
 
   const onUndoClick = () => {
     dispatch(ActionCreators.undo());

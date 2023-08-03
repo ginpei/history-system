@@ -1,6 +1,6 @@
-import { State } from "../store/State";
+import { History } from "../history/History";
 import { Task } from "./Task";
 
-export interface TaskState extends State {
+export interface TaskHistory extends History {
   tasks: Task[];
 }

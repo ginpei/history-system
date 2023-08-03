@@ -1,12 +1,12 @@
-export interface State {
+export interface History {
   id: string;
   title: string;
 }
 
-export function updateState<T extends State>(
+export function updateHistory<T extends History>(
   state: T,
   title: string,
-  updates: Partial<Omit<T, "id" | "title">>,
+  updates: Partial<Omit<T, keyof History>>,
 ): T {
   return {
     ...state,
