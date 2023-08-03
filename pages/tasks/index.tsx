@@ -1,8 +1,8 @@
 import type { NextPage } from "next";
-import { ReduxPage } from "../../src/pages/redux/ReduxPage";
+import { TasksPage } from "../../src/pages/tasks/TasksPage";
 
 const Home: NextPage = () => {
-  return <ReduxPage />;
+  return <TasksPage />;
 };
 
 export default Home;

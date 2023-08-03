@@ -15,7 +15,7 @@ export function HomePage(): JSX.Element {
         <VStack>
           <H1>History system</H1>
           <p>
-            <A href="/redux">Redux</A>
+            <A href="/tasks">Tasks</A>
           </p>
         </VStack>
       </Container>
