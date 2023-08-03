@@ -1,10 +1,10 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { updateHistory } from "../../../lib/history/History";
 import { Task } from "../../../lib/task/Task";
-import { TaskHistory } from "../../../lib/task/TaskState";
+import { ReduxPageHistory } from "./ReduxPageHistory";
 import { findTask } from "../../../lib/task/taskArrayManipulators";
 
-export function add(state: TaskHistory, action: PayloadAction<Task>) {
+export function add(state: ReduxPageHistory, action: PayloadAction<Task>) {
   const task = action.payload;
   const title = `Added ${task.title}`;
   const tasks = [...state.tasks, task];
@@ -12,7 +12,7 @@ export function add(state: TaskHistory, action: PayloadAction<Task>) {
 }
 
 export function remove(
-  state: TaskHistory,
+  state: ReduxPageHistory,
   action: PayloadAction<Pick<Task, "id">>,
 ) {
   const task = findTask(state.tasks, action.payload.id);
@@ -21,7 +21,7 @@ export function remove(
   return updateHistory(state, title, { tasks });
 }
 
-export function update(state: TaskHistory, action: PayloadAction<Task>) {
+export function update(state: ReduxPageHistory, action: PayloadAction<Task>) {
   const task = action.payload;
   const title = `Updated ${task.title}`;
   const tasks = state.tasks.map((v) =>
