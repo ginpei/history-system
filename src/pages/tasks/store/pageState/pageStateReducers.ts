@@ -1,5 +1,3 @@
-// TODO rename to `tasksReducer`
-
 import { PayloadAction } from "@reduxjs/toolkit";
 import { TasksPageState } from "./TasksPageState";
 

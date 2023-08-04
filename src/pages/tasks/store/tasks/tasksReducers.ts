@@ -1,5 +1,3 @@
-// TODO rename to `tasksReducer`
-
 import {
   HistoryReducer,
   updateHistory,
