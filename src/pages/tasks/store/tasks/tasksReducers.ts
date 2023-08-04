@@ -1,9 +1,12 @@
 // TODO rename to `tasksReducer`
 
-import { HistoryReducer, updateHistory } from "../../../lib/history/AppHistory";
-import { Task } from "../../../lib/task/Task";
-import { findTask } from "../../../lib/task/taskArrayManipulators";
-import { TasksStoreValue } from "./TasksPageHistory";
+import {
+  HistoryReducer,
+  updateHistory,
+} from "../../../../lib/history/AppHistory";
+import { Task } from "../../../../lib/task/Task";
+import { findTask } from "../../../../lib/task/taskArrayManipulators";
+import { TasksStoreValue } from "../TasksPageHistory";
 
 type TaskPageReducer<Payload> = HistoryReducer<Payload, TasksStoreValue>;
 

@@ -7,12 +7,10 @@ import { Checkbox } from "../../lib/style/Checkbox";
 import { H2 } from "../../lib/style/H2";
 import { buildTask, Task } from "../../lib/task/Task";
 import { findTask } from "../../lib/task/taskArrayManipulators";
-import {
-  pageStateActions,
-  taskActions,
-  useHideCompleted,
-  useTasks,
-} from "./store/tasksPageStore";
+import { useHideCompleted } from "./store/pageState/pageStateHooks";
+import { pageStateActions } from "./store/pageState/pageStateSlice";
+import { taskActions } from "./store/tasks/tasksSlice";
+import { useTasks } from "./store/tasks/tasksStoreHooks";
 
 export function TaskSection(): JSX.Element {
   const tasks = useTasks();
