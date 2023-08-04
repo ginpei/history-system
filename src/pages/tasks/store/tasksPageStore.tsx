@@ -1,9 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import React from "react";
-import { Provider, useSelector } from "react-redux";
+import { Provider } from "react-redux";
 import undoable from "redux-undo";
-import { Task } from "../../../lib/task/Task";
-import { TasksPageStateValue, TasksPageStoreState } from "./TasksPageHistory";
 import { pageStateSlice } from "./pageState/pageStateSlice";
 import { tasksSlice } from "./tasks/tasksSlice";
 
