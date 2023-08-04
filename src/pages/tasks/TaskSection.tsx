@@ -1,3 +1,4 @@
+import { ChangeEventHandler } from "react";
 import { useDispatch } from "react-redux";
 import { HStack } from "../../lib/layout/HStack";
 import { VStack } from "../../lib/layout/VStack";
@@ -7,11 +8,11 @@ import { H2 } from "../../lib/style/H2";
 import { buildTask, Task } from "../../lib/task/Task";
 import { findTask } from "../../lib/task/taskArrayManipulators";
 import {
+  pageStateActions,
   taskActions,
   useHideCompleted,
   useTasks,
 } from "./store/tasksPageStore";
-import { ChangeEventHandler } from "react";
 
 export function TaskSection(): JSX.Element {
   const tasks = useTasks();
@@ -32,7 +33,9 @@ export function TaskSection(): JSX.Element {
     event,
   ) => {
     dispatch(
-      taskActions.toggleHideCompleted({ hideCompleted: event.target.checked }),
+      pageStateActions.toggleHideCompleted({
+        hideCompleted: event.target.checked,
+      }),
     );
   };
 

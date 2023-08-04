@@ -29,11 +29,3 @@ export const update: TaskPageReducer<Task> = (state, action) => {
   );
   return updateHistory(state, title, { tasks });
 };
-
-export const toggleHideCompleted: TaskPageReducer<{
-  hideCompleted: boolean;
-}> = (state, action) => {
-  const title = `Toggled hide completed`;
-  const hideCompleted = action.payload.hideCompleted;
-  return updateHistory(state, title, { hideCompleted });
-};
