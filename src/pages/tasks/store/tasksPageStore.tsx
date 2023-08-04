@@ -4,7 +4,7 @@ import { Provider, useSelector } from "react-redux";
 import undoable from "redux-undo";
 import { buildHistory } from "../../../lib/history/AppHistory";
 import { Task } from "../../../lib/task/Task";
-import { TasksPageState, TasksStoreValue } from "./TasksPageHistory";
+import { TasksPageStoreState, TasksStoreValue } from "./TasksPageHistory";
 import * as tasksReducers from "./tasksReducers";
 
 const initialTaskState: TasksStoreValue = {
@@ -34,9 +34,9 @@ export function TasksPageStateProvider(props: {
 }
 
 export function useTasks(): Task[] {
-  return useSelector<TasksPageState, Task[]>((v) => v.tasks.present.tasks);
+  return useSelector<TasksPageStoreState, Task[]>((v) => v.tasks.present.tasks);
 }
 
 export function useHideCompleted(): TasksStoreValue["hideCompleted"] {
-  return useSelector((v: TasksPageState) => v.tasks.present.hideCompleted);
+  return useSelector((v: TasksPageStoreState) => v.tasks.present.hideCompleted);
 }

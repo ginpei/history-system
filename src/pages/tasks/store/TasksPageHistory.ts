@@ -2,7 +2,7 @@ import { StateWithHistory } from "redux-undo";
 import { AppHistory } from "../../../lib/history/AppHistory";
 import { Task } from "../../../lib/task/Task";
 
-export interface TasksPageState {
+export interface TasksPageStoreState {
   tasks: StateWithHistory<TasksStoreValue>;
 }
 
