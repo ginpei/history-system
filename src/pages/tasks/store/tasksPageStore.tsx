@@ -5,7 +5,7 @@ import undoable from "redux-undo";
 import { buildHistory } from "../../../lib/history/AppHistory";
 import { Task } from "../../../lib/task/Task";
 import { TasksPageState, TasksStoreValue } from "./TasksPageHistory";
-import * as tasksReducers from "./reducers";
+import * as tasksReducers from "./tasksReducers";
 
 const initialTaskState: TasksStoreValue = {
   ...buildHistory("Initial"),
