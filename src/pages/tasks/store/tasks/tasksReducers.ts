@@ -6,9 +6,9 @@ import {
 } from "../../../../lib/history/AppHistory";
 import { Task } from "../../../../lib/task/Task";
 import { findTask } from "../../../../lib/task/taskArrayManipulators";
-import { TasksStoreValue } from "../TasksPageHistory";
+import { TasksState } from "./TasksState";
 
-type TaskPageReducer<Payload> = HistoryReducer<Payload, TasksStoreValue>;
+type TaskPageReducer<Payload> = HistoryReducer<Payload, TasksState>;
 
 export const add: TaskPageReducer<Task> = (state, action) => {
   const task = action.payload;

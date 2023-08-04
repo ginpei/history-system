@@ -1,10 +1,10 @@
 // TODO rename to `tasksReducer`
 
 import { PayloadAction } from "@reduxjs/toolkit";
-import { TasksPageStateValue } from "../TasksPageHistory";
+import { TasksPageState } from "./TasksPageState";
 
 type PageStateReducer<Payload> = (
-  state: TasksPageStateValue,
+  state: TasksPageState,
   action: PayloadAction<Payload>,
 ) => void;
 

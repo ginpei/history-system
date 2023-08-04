@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { buildHistory } from "../../../../lib/history/AppHistory";
-import { TasksStoreValue } from "../TasksPageHistory";
+import { TasksState } from "./TasksState";
 import * as tasksReducers from "./tasksReducers";
 
-const initialTaskState: TasksStoreValue = {
+const initialTaskState: TasksState = {
   ...buildHistory("Initial"),
   tasks: [],
 };

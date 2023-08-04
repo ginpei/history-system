@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { TasksPageStateValue } from "../TasksPageHistory";
 import * as pageStateReducers from "./pageStateReducers";
+import { TasksPageState } from "./TasksPageState";
 
-const initialPageState: TasksPageStateValue = {
+const initialPageState: TasksPageState = {
   hideCompleted: false,
 };
 

@@ -4,7 +4,8 @@ import { HStack } from "../../lib/layout/HStack";
 import { VStack } from "../../lib/layout/VStack";
 import { Button } from "../../lib/style/Button";
 import { H2 } from "../../lib/style/H2";
-import { TasksPageStoreState, TasksStoreValue } from "./store/TasksPageHistory";
+import { TasksPageStoreState } from "./store/TasksPageStoreState";
+import { TasksState } from "./store/tasks/TasksState";
 
 export function HistorySection(): JSX.Element {
   const dispatch = useDispatch();
@@ -47,15 +48,9 @@ export function HistorySection(): JSX.Element {
 }
 
 // TODO extract
-function useHistories(): [
-  TasksStoreValue[],
-  TasksStoreValue,
-  TasksStoreValue[],
-] {
+function useHistories(): [TasksState[], TasksState, TasksState[]] {
   return useSelector(
-    (
-      v: TasksPageStoreState,
-    ): [TasksStoreValue[], TasksStoreValue, TasksStoreValue[]] => [
+    (v: TasksPageStoreState): [TasksState[], TasksState, TasksState[]] => [
       v.tasks.past,
       v.tasks.present,
       v.tasks.future,
