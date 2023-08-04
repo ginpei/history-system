@@ -13,17 +13,17 @@ const initialTaskState: TasksStoreValue = {
   tasks: [],
 };
 
-const slice = createSlice({
+const tasksSlice = createSlice({
   name: "tasks",
   initialState: initialTaskState,
   reducers: tasksReducers,
 });
 
-export const taskActions = slice.actions;
+export const taskActions = tasksSlice.actions;
 
 const store = configureStore({
   reducer: {
-    tasks: undoable(slice.reducer),
+    tasks: undoable(tasksSlice.reducer),
   },
 });
 
