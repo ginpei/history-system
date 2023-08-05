@@ -20,6 +20,9 @@ export function HomePage(): JSX.Element {
           <p>
             <A href="/tasks">Tasks</A>
           </p>
+          <p>
+            <A href="/singleFile">Single file example</A>
+          </p>
         </VStack>
       </Container>
     </div>
