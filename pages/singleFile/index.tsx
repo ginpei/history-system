@@ -5,21 +5,27 @@ import undoable, { ActionCreators, StateWithHistory } from "redux-undo";
 
 // partial state for a section (undo target)
 interface NumberState {
+  id: string;
+  title: string;
   value: number;
 }
 
 const initialNumberState: NumberState = {
+  id: "initial",
   value: 0,
+  title: "Initial",
 };
 
 // methods to update the state
 // (They are NOT invoked directly)
 const numberReducers = {
-  set: (state: NumberState, action: PayloadAction<number>) => {
+  set: (state: NumberState, action: PayloadAction<number>): NumberState => {
     const value = action.payload;
     return {
       ...state,
+      id: crypto.randomUUID(),
       value,
+      title: `Set ${value}`,
     };
   },
 };
@@ -35,10 +41,13 @@ const numberSlice = createSlice({
 function useNumberValue() {
   return useSelector((state: StoreState) => state.number.present.value);
 }
-function useNumberPast() {
+function useNumberPast(): NumberState[] {
   return useSelector((state: StoreState) => state.number.past);
 }
-function useNumberFuture() {
+function useNumberPresent(): NumberState {
+  return useSelector((state: StoreState) => state.number.present);
+}
+function useNumberFuture(): NumberState[] {
   return useSelector((state: StoreState) => state.number.future);
 }
 
@@ -78,6 +87,7 @@ function PageContent() {
   const dispatch = useDispatch();
   const value = useNumberValue();
   const past = useNumberPast();
+  const present = useNumberPresent();
   const future = useNumberFuture();
 
   return (
@@ -105,6 +115,22 @@ function PageContent() {
           Redo
         </button>
       </div>
+      <ul>
+        {past.map((v, i) => (
+          <li key={v.id} onClick={() => dispatch(ActionCreators.jumpToPast(i))}>
+            {v.title}
+          </li>
+        ))}
+        <li className="text-red-700">{present.title}</li>
+        {future.map((v, i) => (
+          <li
+            key={v.id}
+            onClick={() => dispatch(ActionCreators.jumpToFuture(i))}
+          >
+            {v.title}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
