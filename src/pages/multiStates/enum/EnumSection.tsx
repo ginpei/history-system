@@ -1,14 +1,27 @@
-import { ChangeEventHandler, useState } from "react";
+import { ChangeEventHandler } from "react";
+import { useDispatch } from "react-redux";
 import { VStack } from "../../../lib/layout/VStack";
 import { H2 } from "../../../lib/style/H2";
+import { ColorOption } from "./EnumState";
+import { enumActions } from "./enumSlice";
+import { useBackgroundColor, useColor } from "./enumStateHooks";
 
 type Option = (typeof options)[number];
 
 const options = ["black", "blue", "green", "red", "white"] as const;
 
 export function EnumSection(): JSX.Element {
-  const [backgroundColor, setBackgroundColor] = useState<Option>("white");
-  const [color, setColor] = useState<Option>("black");
+  const dispatch = useDispatch();
+  const color = useColor();
+  const backgroundColor = useBackgroundColor();
+
+  const onColorChange = (newColor: ColorOption) => {
+    dispatch(enumActions.setColor(newColor));
+  };
+
+  const onBackgroundColorChange = (newColor: ColorOption) => {
+    dispatch(enumActions.setBackgroundColor(newColor));
+  };
 
   return (
     <VStack>
@@ -17,13 +30,13 @@ export function EnumSection(): JSX.Element {
         color={color}
         label="Text"
         name="fgColor"
-        onChange={setColor}
+        onChange={onColorChange}
       />
       <ColorSelect
         color={backgroundColor}
         label="Background"
         name="bgColor"
-        onChange={setBackgroundColor}
+        onChange={onBackgroundColorChange}
       />
       <div
         className="border py-2 px-4 text-xl"
