@@ -1,6 +1,7 @@
 import { PayloadAction, configureStore, createSlice } from "@reduxjs/toolkit";
 import type { NextPage } from "next";
 import { Provider, useDispatch, useSelector } from "react-redux";
+import undoable, { ActionCreators, StateWithHistory } from "redux-undo";
 
 // partial state for a section (undo target)
 interface NumberState {
@@ -32,7 +33,13 @@ const numberSlice = createSlice({
 
 // kind of getters
 function useNumberValue() {
-  return useSelector((state: StoreState) => state.number.value);
+  return useSelector((state: StoreState) => state.number.present.value);
+}
+function useNumberPast() {
+  return useSelector((state: StoreState) => state.number.past);
+}
+function useNumberFuture() {
+  return useSelector((state: StoreState) => state.number.future);
 }
 
 // kind of setters generated from reducers to update the state
@@ -40,15 +47,15 @@ function useNumberValue() {
 const numberActions = numberSlice.actions;
 
 // whole state for a page
-// (Why separated to sub states? See below sections)
+// (The sub state will be wrapped by `undoable()`)
 interface StoreState {
-  number: NumberState;
+  number: StateWithHistory<NumberState>;
 }
 
-// finally, create a store
+// finally, create a store wrapping the sub state
 const store = configureStore<StoreState>({
   reducer: {
-    number: numberSlice.reducer,
+    number: undoable(numberSlice.reducer),
   },
 });
 
@@ -70,6 +77,8 @@ const Home: NextPage = () => {
 function PageContent() {
   const dispatch = useDispatch();
   const value = useNumberValue();
+  const past = useNumberPast();
+  const future = useNumberFuture();
 
   return (
     <div>
@@ -78,6 +87,22 @@ function PageContent() {
         Value: {value}{" "}
         <button onClick={() => dispatch(numberActions.set(value + 10))}>
           +10
+        </button>
+      </div>
+      <div>
+        <button
+          className="disabled:opacity-50"
+          disabled={past.length < 1}
+          onClick={() => dispatch(ActionCreators.undo())}
+        >
+          Undo
+        </button>
+        <button
+          className="disabled:opacity-50"
+          disabled={future.length < 1}
+          onClick={() => dispatch(ActionCreators.redo())}
+        >
+          Redo
         </button>
       </div>
     </div>
