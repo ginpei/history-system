@@ -9,11 +9,12 @@ import {
   numberRedoAction,
   numberUndoAction,
 } from "./numberSlice";
-import { useNumber } from "./numberStateHooks";
+import { useNumber, useNumberHistories } from "./numberStateHooks";
 
 export function NumberSection(): JSX.Element {
   const dispatch = useDispatch();
   const number = useNumber();
+  const [pastHistories, presentHistory, futureHistories] = useNumberHistories();
 
   const onUndoClick = () => {
     dispatch(numberUndoAction);
@@ -39,6 +40,17 @@ export function NumberSection(): JSX.Element {
         <Button onClick={onUndoClick}>← Undo</Button>
         <Button onClick={onRedoClick}>Redo →</Button>
       </HStack>
+      <div className="flex flex-wrap gap-2">
+        {pastHistories.map((history) => (
+          <span key={history.id}>{history.title}</span>
+        ))}
+        <span className="underline">{presentHistory.title}</span>
+        {futureHistories.map((history) => (
+          <span className="text-gray-400" key={history.id}>
+            {history.title}
+          </span>
+        ))}
+      </div>
       <p>
         <code>Number: {number}</code>
       </p>

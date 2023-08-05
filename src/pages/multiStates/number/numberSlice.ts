@@ -13,7 +13,9 @@ export const numberUndoAction: Readonly<Action> = { type: undoType };
 export const numberRedoAction: Readonly<Action> = { type: redoType };
 
 const initialEnumState: NumberState = {
+  id: "initial",
   number: 0,
+  title: "Initial",
 };
 
 export const numberSlice = createSlice({
