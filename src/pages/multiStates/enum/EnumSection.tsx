@@ -1,9 +1,11 @@
 import { ChangeEventHandler } from "react";
 import { useDispatch } from "react-redux";
+import { HStack } from "../../../lib/layout/HStack";
 import { VStack } from "../../../lib/layout/VStack";
+import { Button } from "../../../lib/style/Button";
 import { H2 } from "../../../lib/style/H2";
 import { ColorOption } from "./EnumState";
-import { enumActions } from "./enumSlice";
+import { enumActions, enumRedoAction, enumUndoAction } from "./enumSlice";
 import { useBackgroundColor, useColor } from "./enumStateHooks";
 
 type Option = (typeof options)[number];
@@ -14,6 +16,14 @@ export function EnumSection(): JSX.Element {
   const dispatch = useDispatch();
   const color = useColor();
   const backgroundColor = useBackgroundColor();
+
+  const onUndoClick = () => {
+    dispatch(enumUndoAction);
+  };
+
+  const onRedoClick = () => {
+    dispatch(enumRedoAction);
+  };
 
   const onColorChange = (newColor: ColorOption) => {
     dispatch(enumActions.setColor(newColor));
@@ -26,6 +36,10 @@ export function EnumSection(): JSX.Element {
   return (
     <VStack>
       <H2>Enum</H2>
+      <HStack>
+        <Button onClick={onUndoClick}>← Undo</Button>
+        <Button onClick={onRedoClick}>Redo →</Button>
+      </HStack>
       <ColorSelect
         color={color}
         label="Text"

@@ -1,6 +1,16 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { Action, createSlice } from "@reduxjs/toolkit";
+import { UndoableOptions } from "redux-undo";
 import { EnumState } from "./EnumState";
 import * as enumReducers from "./enumReducers";
+
+const undoType = "EnumUndo";
+const redoType = "EnumRedo";
+export const enumUndoableOptions: UndoableOptions = {
+  undoType: undoType,
+  redoType: redoType,
+};
+export const enumUndoAction: Action = { type: undoType };
+export const enumRedoAction: Action = { type: redoType };
 
 const initialEnumState: EnumState = {
   color: "black",
