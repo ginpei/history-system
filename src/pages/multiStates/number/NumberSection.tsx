@@ -1,14 +1,27 @@
 import { ChangeEventHandler } from "react";
 import { useDispatch } from "react-redux";
+import { HStack } from "../../../lib/layout/HStack";
 import { VStack } from "../../../lib/layout/VStack";
 import { Button } from "../../../lib/style/Button";
 import { H2 } from "../../../lib/style/H2";
-import { numberActions } from "./numberSlice";
+import {
+  numberActions,
+  numberRedoAction,
+  numberUndoAction,
+} from "./numberSlice";
 import { useNumber } from "./numberStateHooks";
 
 export function NumberSection(): JSX.Element {
   const dispatch = useDispatch();
   const number = useNumber();
+
+  const onUndoClick = () => {
+    dispatch(numberUndoAction);
+  };
+
+  const onRedoClick = () => {
+    dispatch(numberRedoAction);
+  };
 
   const onRangeChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     const value = Number(event.currentTarget.value);
@@ -22,6 +35,10 @@ export function NumberSection(): JSX.Element {
   return (
     <VStack>
       <H2>Number</H2>
+      <HStack>
+        <Button onClick={onUndoClick}>← Undo</Button>
+        <Button onClick={onRedoClick}>Redo →</Button>
+      </HStack>
       <p>
         <code>Number: {number}</code>
       </p>
