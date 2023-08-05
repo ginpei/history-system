@@ -9,8 +9,8 @@ export const enumUndoableOptions: UndoableOptions = {
   undoType: undoType,
   redoType: redoType,
 };
-export const enumUndoAction: Action = { type: undoType };
-export const enumRedoAction: Action = { type: redoType };
+export const enumUndoAction: Readonly<Action> = { type: undoType };
+export const enumRedoAction: Readonly<Action> = { type: redoType };
 
 const initialEnumState: EnumState = {
   color: "black",
