@@ -6,7 +6,11 @@ import { Button } from "../../../lib/style/Button";
 import { H2 } from "../../../lib/style/H2";
 import { ColorOption } from "./EnumState";
 import { enumActions, enumRedoAction, enumUndoAction } from "./enumSlice";
-import { useBackgroundColor, useColor } from "./enumStateHooks";
+import {
+  useBackgroundColor,
+  useColor,
+  useEnumHistories,
+} from "./enumStateHooks";
 
 type Option = (typeof options)[number];
 
@@ -16,6 +20,7 @@ export function EnumSection(): JSX.Element {
   const dispatch = useDispatch();
   const color = useColor();
   const backgroundColor = useBackgroundColor();
+  const [pastHistories, presentHistory, futureHistories] = useEnumHistories();
 
   const onUndoClick = () => {
     dispatch(enumUndoAction);
@@ -37,9 +42,31 @@ export function EnumSection(): JSX.Element {
     <VStack>
       <H2>Enum</H2>
       <HStack>
-        <Button onClick={onUndoClick}>← Undo</Button>
-        <Button onClick={onRedoClick}>Redo →</Button>
+        <Button disabled={pastHistories.length < 1} onClick={onUndoClick}>
+          ← Undo
+        </Button>
+        <Button disabled={futureHistories.length < 1} onClick={onRedoClick}>
+          Redo →
+        </Button>
       </HStack>
+      <div className="flex flex-wrap gap-2">
+        {pastHistories.map((history, index) => (
+          <span key={`${index}-${history.color}-${history.backgroundColor}`}>
+            {history.color}/{history.backgroundColor}
+          </span>
+        ))}
+        <span className="underline">
+          {presentHistory.color}/{presentHistory.backgroundColor}
+        </span>
+        {futureHistories.map((history, index) => (
+          <span
+            className="text-gray-400"
+            key={`${index}-${history.color}-${history.backgroundColor}`}
+          >
+            {history.color}/{history.backgroundColor}
+          </span>
+        ))}
+      </div>
       <ColorSelect
         color={color}
         label="Text"
