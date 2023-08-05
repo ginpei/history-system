@@ -5,6 +5,6 @@ import { PageState } from "../pageState/PageState";
 
 export interface MultiStatesPageStoreState {
   enum: StateWithHistory<EnumState>;
-  number: NumberState;
+  number: StateWithHistory<NumberState>;
   pageState: PageState;
 }

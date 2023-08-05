@@ -7,7 +7,7 @@ import { pageStateSlice } from "../pageState/pageStateSlice";
 export const multiStatesPageStore = configureStore({
   reducer: {
     enum: undoable(enumSlice.reducer),
-    number: numberSlice.reducer,
+    number: undoable(numberSlice.reducer),
     pageState: pageStateSlice.reducer,
   },
 });
