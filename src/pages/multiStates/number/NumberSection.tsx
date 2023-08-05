@@ -1,14 +1,22 @@
-import { ChangeEventHandler, useState } from "react";
+import { ChangeEventHandler } from "react";
+import { useDispatch } from "react-redux";
 import { VStack } from "../../../lib/layout/VStack";
-import { H2 } from "../../../lib/style/H2";
 import { Button } from "../../../lib/style/Button";
+import { H2 } from "../../../lib/style/H2";
+import { numberActions } from "./numberSlice";
+import { useNumber } from "./numberStateHooks";
 
 export function NumberSection(): JSX.Element {
-  const [number, setNumber] = useState(0);
+  const dispatch = useDispatch();
+  const number = useNumber();
 
   const onRangeChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     const value = Number(event.currentTarget.value);
-    setNumber(value);
+    dispatch(numberActions.set(value));
+  };
+
+  const addNumber = (amount: number) => {
+    dispatch(numberActions.add(amount));
   };
 
   return (
@@ -26,10 +34,10 @@ export function NumberSection(): JSX.Element {
         value={number}
       />
       <div className="flex mx-auto max-w-screen-sm gap-4 [&>*]:flex-grow">
-        <Button onClick={() => setNumber(number - 10)}>-10</Button>
-        <Button onClick={() => setNumber(number - 1)}>-1</Button>
-        <Button onClick={() => setNumber(number + 1)}>+1</Button>
-        <Button onClick={() => setNumber(number + 10)}>+10</Button>
+        <Button onClick={() => addNumber(-10)}>-10</Button>
+        <Button onClick={() => addNumber(-1)}>-1</Button>
+        <Button onClick={() => addNumber(+1)}>+1</Button>
+        <Button onClick={() => addNumber(+10)}>+10</Button>
       </div>
     </VStack>
   );
