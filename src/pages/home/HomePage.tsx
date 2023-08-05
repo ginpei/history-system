@@ -15,7 +15,7 @@ export function HomePage(): JSX.Element {
         <VStack>
           <H1>History system</H1>
           <p>
-            <A href="/counters">Counters</A>
+            <A href="/multiStates">Multi states</A>
           </p>
           <p>
             <A href="/tasks">Tasks</A>
