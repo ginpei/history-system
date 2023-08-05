@@ -9,9 +9,9 @@ export function Button(props: ButtonProps): JSX.Element {
     <button
       className="
         border px-4 h-8
-      bg-slate-100
-      hover:bg-slate-200
-      disabled:bg-gray-300 disabled:text-gray-500
+        bg-slate-100
+        hover:bg-slate-200
+        disabled:bg-gray-300 disabled:text-gray-500
       "
       {...props}
     />
