@@ -4,14 +4,12 @@ import { Provider, useDispatch } from "react-redux";
 import { Container } from "../../lib/layout/Container";
 import { HStack } from "../../lib/layout/HStack";
 import { VStack } from "../../lib/layout/VStack";
-import { Button } from "../../lib/style/Button";
 import { H1 } from "../../lib/style/H1";
 import { EnumSection } from "./enum/EnumSection";
 import { NumberSection } from "./number/NumberSection";
 import { useTheme } from "./pageState/pageStateHooks";
 import { pageStateActions } from "./pageState/pageStateSlice";
 import { multiStatesPageStore } from "./store/multiStatesPageStore";
-import { ActionCreators } from "redux-undo";
 
 export function MultiStatesPage(): JSX.Element {
   return (
@@ -51,14 +49,6 @@ function PageContent(): JSX.Element {
     dispatch(pageStateActions.set(theme));
   };
 
-  const onUndoClick = () => {
-    dispatch(ActionCreators.undo());
-  };
-
-  const onRedoClick = () => {
-    dispatch(ActionCreators.redo());
-  };
-
   return (
     <Container>
       <div className="PageContent flex flex-col gap-16">
@@ -85,10 +75,6 @@ function PageContent(): JSX.Element {
               />
               Dark
             </label>
-          </HStack>
-          <HStack>
-            <Button onClick={onUndoClick}>← Undo</Button>
-            <Button onClick={onRedoClick}>Redo →</Button>
           </HStack>
         </VStack>
         <EnumSection />
