@@ -13,8 +13,10 @@ export const enumUndoAction: Readonly<Action> = { type: undoType };
 export const enumRedoAction: Readonly<Action> = { type: redoType };
 
 const initialEnumState: EnumState = {
-  color: "black",
   backgroundColor: "white",
+  color: "black",
+  id: "initial",
+  title: "Initial",
 };
 
 export const enumSlice = createSlice({

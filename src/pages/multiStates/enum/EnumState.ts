@@ -1,4 +1,6 @@
-export interface EnumState {
+import { AppHistory } from "../../../lib/history/AppHistory";
+
+export interface EnumState extends AppHistory {
   color: ColorOption;
   backgroundColor: ColorOption;
 }

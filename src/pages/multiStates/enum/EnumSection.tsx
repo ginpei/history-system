@@ -50,20 +50,13 @@ export function EnumSection(): JSX.Element {
         </Button>
       </HStack>
       <div className="flex flex-wrap gap-2">
-        {pastHistories.map((history, index) => (
-          <span key={`${index}-${history.color}-${history.backgroundColor}`}>
-            {history.color}/{history.backgroundColor}
-          </span>
+        {pastHistories.map((history) => (
+          <span key={history.id}>{history.title}</span>
         ))}
-        <span className="underline">
-          {presentHistory.color}/{presentHistory.backgroundColor}
-        </span>
-        {futureHistories.map((history, index) => (
-          <span
-            className="text-gray-400"
-            key={`${index}-${history.color}-${history.backgroundColor}`}
-          >
-            {history.color}/{history.backgroundColor}
+        <span className="underline">{presentHistory.title}</span>
+        {futureHistories.map((history) => (
+          <span className="text-gray-400" key={history.id}>
+            {history.title}
           </span>
         ))}
       </div>
