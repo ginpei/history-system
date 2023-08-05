@@ -1,4 +1,4 @@
-import { ChangeEventHandler } from "react";
+import { ChangeEventHandler, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { HStack } from "../../../lib/layout/HStack";
 import { VStack } from "../../../lib/layout/VStack";
@@ -14,7 +14,22 @@ import { useNumber, useNumberHistories } from "./numberStateHooks";
 export function NumberSection(): JSX.Element {
   const dispatch = useDispatch();
   const number = useNumber();
+  const [diff, setDiff] = useState(0);
   const [pastHistories, presentHistory, futureHistories] = useNumberHistories();
+  const refRange = useRef<HTMLInputElement>(null);
+
+  const curNumber = number + diff;
+
+  useEffect(() => {
+    const el = refRange.current;
+    const f = () => {
+      setDiff(0);
+      dispatch(numberActions.set(curNumber));
+    };
+
+    el?.addEventListener("change", f);
+    return () => el?.removeEventListener("change", f);
+  }, [curNumber, dispatch]);
 
   const onUndoClick = () => {
     dispatch(numberUndoAction);
@@ -26,7 +41,7 @@ export function NumberSection(): JSX.Element {
 
   const onRangeChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     const value = Number(event.currentTarget.value);
-    dispatch(numberActions.set(value));
+    setDiff(value - number);
   };
 
   const addNumber = (amount: number) => {
@@ -52,15 +67,16 @@ export function NumberSection(): JSX.Element {
         ))}
       </div>
       <p>
-        <code>Number: {number}</code>
+        <code>Number: {curNumber}</code>
       </p>
       <input
         max="100"
         min="-100"
         onChange={onRangeChange}
+        ref={refRange}
         step="1"
         type="range"
-        value={number}
+        value={curNumber}
       />
       <div className="flex mx-auto max-w-screen-sm gap-4 [&>*]:flex-grow">
         <Button onClick={() => addNumber(-10)}>-10</Button>
