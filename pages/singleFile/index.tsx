@@ -1,7 +1,7 @@
 import { PayloadAction, configureStore, createSlice } from "@reduxjs/toolkit";
 import type { NextPage } from "next";
 import { Provider, useDispatch, useSelector } from "react-redux";
-import undoable, { ActionCreators, StateWithHistory } from "redux-undo";
+import undoable, { StateWithHistory, UndoableOptions } from "redux-undo";
 
 // partial state for a section (undo target)
 interface NumberState {
@@ -9,6 +9,26 @@ interface NumberState {
   title: string;
   value: number;
 }
+
+const numberStateUndoableOption: UndoableOptions = {
+  undoType: "NUMBER_UNDO",
+  redoType: "NUMBER_REDO",
+  jumpToPastType: "NUMBER_JUMP_TO_PAST",
+  jumpToFutureType: "NUMBER_JUMP_TO_FUTURE",
+};
+
+const numberHistoryActions = {
+  undo: () => ({ type: numberStateUndoableOption.undoType }),
+  redo: () => ({ type: numberStateUndoableOption.redoType }),
+  jumpToPast: (index: number) => ({
+    type: numberStateUndoableOption.jumpToPastType,
+    index,
+  }),
+  jumpToFuture: (index: number) => ({
+    type: numberStateUndoableOption.jumpToFutureType,
+    index,
+  }),
+};
 
 const initialNumberState: NumberState = {
   id: "initial",
@@ -64,7 +84,7 @@ interface StoreState {
 // finally, create a store wrapping the sub state
 const store = configureStore<StoreState>({
   reducer: {
-    number: undoable(numberSlice.reducer),
+    number: undoable(numberSlice.reducer, numberStateUndoableOption),
   },
 });
 
@@ -103,21 +123,24 @@ function PageContent() {
         <button
           className="disabled:opacity-50"
           disabled={past.length < 1}
-          onClick={() => dispatch(ActionCreators.undo())}
+          onClick={() => dispatch(numberHistoryActions.undo())}
         >
           Undo
         </button>
         <button
           className="disabled:opacity-50"
           disabled={future.length < 1}
-          onClick={() => dispatch(ActionCreators.redo())}
+          onClick={() => dispatch(numberHistoryActions.redo())}
         >
           Redo
         </button>
       </div>
       <ul>
         {past.map((v, i) => (
-          <li key={v.id} onClick={() => dispatch(ActionCreators.jumpToPast(i))}>
+          <li
+            key={v.id}
+            onClick={() => dispatch(numberHistoryActions.jumpToPast(i))}
+          >
             {v.title}
           </li>
         ))}
@@ -125,7 +148,7 @@ function PageContent() {
         {future.map((v, i) => (
           <li
             key={v.id}
-            onClick={() => dispatch(ActionCreators.jumpToFuture(i))}
+            onClick={() => dispatch(numberHistoryActions.jumpToFuture(i))}
           >
             {v.title}
           </li>
