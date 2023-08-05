@@ -52,8 +52,12 @@ export function NumberSection(): JSX.Element {
     <VStack>
       <H2>Number</H2>
       <HStack>
-        <Button onClick={onUndoClick}>← Undo</Button>
-        <Button onClick={onRedoClick}>Redo →</Button>
+        <Button disabled={pastHistories.length < 1} onClick={onUndoClick}>
+          ← Undo
+        </Button>
+        <Button disabled={futureHistories.length < 1} onClick={onRedoClick}>
+          Redo →
+        </Button>
       </HStack>
       <div className="flex flex-wrap gap-2">
         {pastHistories.map((history) => (
